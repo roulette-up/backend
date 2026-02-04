@@ -1,0 +1,67 @@
+name: Deploy - Combined
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  determine-modules:
+    runs-on: ubuntu-latest
+    outputs:
+      deployApp: ${{ steps.set.outputs.deployApp }}
+      deployAdmin: ${{ steps.set.outputs.deployAdmin }}
+
+    steps:
+      # 1. push된 커밋 기준 코드 내려 받기
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. 이전 커밋과 현재 커밋 사이의 변경된 파일 목록 추출
+      - name: Get list of changed files
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only HEAD^ HEAD)
+          echo "$CHANGED" > changed.txt
+
+      # 3. 변경된 파일을 기준으로 어떤 모듈을 배포할지 판단
+      - name: Decide what to deploy
+        id: set
+        run: |
+          CHANGED=$(cat changed.txt)
+
+          echo "Changed files:"
+          echo "$CHANGED"
+
+          DEPLOY_APP=false
+          DEPLOY_ADMIN=false
+
+          for file in $CHANGED; do
+            if [[ "$file" == rouletteup-app/* ]]; then
+              DEPLOY_APP=true
+            elif [[ "$file" == rouletteup-admin/* ]]; then
+              DEPLOY_ADMIN=true
+            elif [[ "$file" == rouletteup-common/* || "$file" == rouletteup-domain/* ]]; then
+              DEPLOY_APP=true
+              DEPLOY_ADMIN=true
+              break
+            fi
+          done
+
+          echo "deployApp=$DEPLOY_APP" >> $GITHUB_OUTPUT
+          echo "deployAdmin=$DEPLOY_ADMIN" >> $GITHUB_OUTPUT
+
+  # rouletteup-app 배포 트리거
+  deploy-app:
+    needs: determine-modules
+    if: needs.determine-modules.outputs.deployApp == 'true'
+    uses: ./.github/workflows/deploy-app.yml
+    secrets: inherit
+
+  # rouletteup-admin 배포 트리거
+  deploy-admin:
+    needs: determine-modules
+    if: needs.determine-modules.outputs.deployAdmin == 'true'
+    uses: ./.github/workflows/deploy-admin.yml
+    secrets: inherit
