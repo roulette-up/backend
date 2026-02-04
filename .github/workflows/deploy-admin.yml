@@ -1,0 +1,37 @@
+name: Deploy - admin
+
+on:
+  workflow_dispatch:
+  # 다른 워크플로에서 호출 가능하게 하기 위한 트리거
+  workflow_call:
+
+jobs:
+  deploy-admin:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. AWS 자격 증명 구성
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      # 2. AWS CLI 설치
+      - name: Install AWS CLI
+        run: |
+          curl -sS https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip
+          unzip -q awscliv2.zip
+          sudo ./aws/install --update
+
+      # 3. SSM Run Command로 EC2 배포 스크립트 실행
+      - name: Deploy with SSM
+        run: |
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy rouletteup-admin via GitHub Actions" \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --region ap-northeast-2 \
+            --parameters commands='bash /home/ubuntu/script/deploy_admin.sh' \
+            --output text

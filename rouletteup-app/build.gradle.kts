@@ -1,5 +1,5 @@
 tasks.bootJar { enabled = true }
-tasks.jar { enabled = true }
+tasks.jar { enabled = false }
 
 dependencies {
     implementation(project(":rouletteup-common"))
