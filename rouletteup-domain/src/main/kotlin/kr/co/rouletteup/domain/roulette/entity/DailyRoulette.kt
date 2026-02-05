@@ -19,7 +19,7 @@ class DailyRoulette(
     participantCount: Int,
 ) : BaseEntity() {
 
-    // 룰렛 날짜액
+    // 룰렛 날짜
     @Column(name = "roulette_date", nullable = false)
     var rouletteDate: LocalDate = rouletteDate
         protected set
