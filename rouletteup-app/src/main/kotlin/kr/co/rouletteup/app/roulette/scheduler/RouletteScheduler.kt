@@ -12,7 +12,7 @@ class RouletteScheduler(
     /**
      * 매일 자정 룰렛 생성 로직 실행
      */
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     fun createDailyRoulette() {
         rouletteCommandService.createTodayIfNotExists()
     }
