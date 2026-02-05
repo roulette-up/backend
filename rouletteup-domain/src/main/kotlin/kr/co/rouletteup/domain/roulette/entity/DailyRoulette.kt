@@ -15,7 +15,7 @@ import org.hibernate.annotations.SQLRestriction
 class DailyRoulette(
     rouletteDate: LocalDate,
     totalBudget: Long = 100_000L,
-    remainingBudget: Long = 100_000L,
+    usedBudget: Long = 0L,
     participantCount: Int = 0,
 ) : BaseEntity() {
 
@@ -29,9 +29,9 @@ class DailyRoulette(
     var totalBudget: Long = totalBudget
         protected set
 
-    // 남은 예산
-    @Column(name = "remaining_budget", nullable = false)
-    var remainingBudget: Long = remainingBudget
+    // 사용 예산
+    @Column(name = "used_budget", nullable = false)
+    var usedBudget: Long = usedBudget
         protected set
 
     // 참여자 수
