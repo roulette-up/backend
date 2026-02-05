@@ -47,13 +47,25 @@ interface AuthApi {
                     mediaType = "application/json",
                     examples = [
                         ExampleObject(
-                            name = "유효성 검증 실패 - 닉네임에 공백을 전송 || 2자 미만 || 30자 초과한 경우",
+                            name = "유효성 검증 실패 - 닉네임에 공백을 전송",
                             value = """
                         {
                             "code": "G002",
                             "message": "유효성 검증에 실패하였습니다.",
                             "errors": {
                                 "nickname": "닉네임은 필수 입력값입니다."
+                            }
+                        }
+                        """
+                        ),
+                        ExampleObject(
+                            name = "유효성 검증 실패 - 2자 미만 || 30자 초과한 경우",
+                            value = """
+                        {
+                            "code": "G002",
+                            "message": "유효성 검증에 실패하였습니다.",
+                            "errors": {
+                                "nickname": "닉네임은 2~30자여야 합니다."
                             }
                         }
                         """

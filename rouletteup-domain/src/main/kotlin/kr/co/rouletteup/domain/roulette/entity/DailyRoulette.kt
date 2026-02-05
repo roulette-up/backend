@@ -14,13 +14,13 @@ import org.hibernate.annotations.SQLRestriction
 @Table(name = "daily_roulette")
 class DailyRoulette(
     rouletteDate: LocalDate,
-    totalBudget: Long,
-    remainingBudget: Long,
-    participantCount: Int,
+    totalBudget: Long = 100_000L,
+    remainingBudget: Long = 100_000L,
+    participantCount: Int = 0,
 ) : BaseEntity() {
 
     // 룰렛 날짜
-    @Column(name = "roulette_date", nullable = false)
+    @Column(name = "roulette_date", nullable = false, unique = true)
     var rouletteDate: LocalDate = rouletteDate
         protected set
 
