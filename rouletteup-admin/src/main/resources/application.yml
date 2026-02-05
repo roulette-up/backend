@@ -5,5 +5,5 @@ spring:
   profiles:
     active: local
     group:
-      local: common, domain
-      prod: common, domain
+      local: common, domain, infrastructure
+      prod: common, domain, infrastructure
