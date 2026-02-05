@@ -14,6 +14,9 @@ class DailyRouletteService(
         dailyRouletteRepository.save(dailyRoulette)
     }
 
+    fun readByRouletteDate(rouletteDate: LocalDate): DailyRoulette? =
+        dailyRouletteRepository.findByRouletteDate(rouletteDate)
+
     fun existsToday(today: LocalDate): Boolean =
         dailyRouletteRepository.existsByRouletteDate(today)
 }

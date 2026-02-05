@@ -5,5 +5,6 @@ import kr.co.rouletteup.domain.roulette.entity.DailyRoulette
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface DailyRouletteRepository : JpaRepository<DailyRoulette, Long> {
+    fun findByRouletteDate(rouletteDate: LocalDate): DailyRoulette?
     fun existsByRouletteDate(rouletteDate: LocalDate): Boolean
 }
