@@ -25,13 +25,13 @@ class RouletteControllerTest {
 
     @Nested
     @DisplayName("금일 남은 예산 조회 API")
-    inner class GetTodayRemainingBudget {
+    inner class GetTodayBudget {
         @Test
-        fun `오늘 룰렛 잔여 예산 조회`() {
+        fun `오늘 룰렛 예산 조회`() {
             // given
-            val response = RouletteRes(10000L)
+            val response = RouletteRes(100_000L, 70_000L)
 
-            given(getRouletteUseCase.getTodayRemainingBudget())
+            given(getRouletteUseCase.getTodayBudget())
                 .willReturn(response)
 
             // when
@@ -45,7 +45,8 @@ class RouletteControllerTest {
                 .andExpect {
                     status { isOk() }
                     jsonPath("$.message").value("요청이 성공하였습니다.")
-                    jsonPath("$.data.remainingBudget").value(response.remainingBudget)
+                    jsonPath("$.data.totalBudget").value(response.totalBudget)
+                    jsonPath("$.data.usedBudget").value(response.usedBudget)
                 }
         }
     }

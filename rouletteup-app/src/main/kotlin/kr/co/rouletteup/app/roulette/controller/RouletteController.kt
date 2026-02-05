@@ -15,10 +15,10 @@ class RouletteController(
 ) : RouletteApi {
 
     @GetMapping("/today")
-    override fun getTodayRoulette(): ResponseEntity<*> =
+    override fun getTodayBudget(): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
-                getRouletteUseCase.getTodayRemainingBudget()
+                getRouletteUseCase.getTodayBudget()
             )
         )
 }

@@ -20,7 +20,7 @@ class CacheConfig(
     @Bean
     fun cacheManager(): CacheManager {
         val manager = CaffeineCacheManager(
-            CacheNames.REMAINING_BUDGET
+            CacheNames.TOTAL_BUDGET, CacheNames.USED_BUDGET
         )
 
         manager.setCaffeine(

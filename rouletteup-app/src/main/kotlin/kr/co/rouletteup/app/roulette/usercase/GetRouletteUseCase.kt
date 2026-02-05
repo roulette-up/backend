@@ -17,24 +17,32 @@ class GetRouletteUseCase(
 ) {
 
     /**
-     * 금일 룰렛 남은 예산 조회 메서드
-     * - 예산이 캐시되어 있다면, 캐시된 값 반환
+     * 금일 룰렛 예산 조회 메서드
+     * - 총 예산 및 사용 예산이 캐시에 있다면, 반환
      * - 캐시에 없다면, DB에서 조회 후 반환
      *
      * @return 남은 예산 정보 DTO
      */
     @Transactional(readOnly = true)
-    fun getTodayRemainingBudget(): RouletteRes {
+    fun getTodayBudget(): RouletteRes {
         val today = LocalDate.now()
 
-        val cachedRemainingBudget = cacheRepository.get(
-            cacheName = CacheNames.REMAINING_BUDGET,
+        // 총 예산 캐시 조회
+        val cachedTotalBudget = cacheRepository.get(
+            cacheName = CacheNames.TOTAL_BUDGET,
             key = today.toString(),
             type = Long::class
         )
 
-        if (cachedRemainingBudget != null) {
-            return RouletteRes(cachedRemainingBudget)
+        // 사용 예산 캐시 조회
+        val cachedUsedBudget = cacheRepository.get(
+            cacheName = CacheNames.USED_BUDGET,
+            key = today.toString(),
+            type = Long::class
+        )
+
+        if (cachedTotalBudget != null && cachedUsedBudget != null) {
+            return RouletteRes(cachedTotalBudget, cachedUsedBudget)
         }
 
         val dailyRoulette = dailyRouletteService.readByRouletteDate(today)
