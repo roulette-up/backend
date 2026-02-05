@@ -1,5 +1,6 @@
 package kr.co.rouletteup.infrastructure.cache.constant
 
 object CacheNames {
-    const val REMAINING_BUDGET = "remaining_budget::"
+    const val TOTAL_BUDGET = "total_budget::"
+    const val USED_BUDGET = "used_budget::"
 }
