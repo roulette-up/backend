@@ -1,0 +1,3 @@
+cache:
+  caffeine:
+    expire-minutes: ${EXPIRE_MINUTES:10}
