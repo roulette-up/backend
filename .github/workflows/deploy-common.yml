@@ -42,7 +42,7 @@ jobs:
               DEPLOY_APP=true
             elif [[ "$file" == rouletteup-admin/* ]]; then
               DEPLOY_ADMIN=true
-            elif [[ "$file" == rouletteup-common/* || "$file" == rouletteup-domain/* ]]; then
+            elif [[ "$file" == rouletteup-common/* || "$file" == rouletteup-domain/* || "$file" == rouletteup-infrastructure/* ]]; then
               DEPLOY_APP=true
               DEPLOY_ADMIN=true
               break
