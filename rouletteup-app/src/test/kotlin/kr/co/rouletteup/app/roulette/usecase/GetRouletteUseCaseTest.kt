@@ -34,8 +34,8 @@ class GetRouletteUseCaseTest {
     private lateinit var getRouletteUseCase: GetRouletteUseCase
 
     @Nested
-    @DisplayName("금일 남은 예산 조회")
-    inner class GetTodayRemainingBudget {
+    @DisplayName("금일 예산 조회")
+    inner class GetTodayBudget {
 
         @Test
         fun `캐시에 값이 있으면 DB 조회 없이 반환한다`() {
@@ -43,19 +43,29 @@ class GetRouletteUseCaseTest {
             val today = LocalDate.now().toString()
             every {
                 cacheRepository.get(
-                    CacheNames.REMAINING_BUDGET,
+                    CacheNames.TOTAL_BUDGET,
                     today,
                     Long::class
                 )
-            } returns 5000L
+            } returns 100_000L
+
+            every {
+                cacheRepository.get(
+                    CacheNames.USED_BUDGET,
+                    today,
+                    Long::class
+                )
+            } returns 70_000L
 
             // when
-            val result = getRouletteUseCase.getTodayRemainingBudget()
+            val result = getRouletteUseCase.getTodayBudget()
 
             // then
-            assertEquals(5000L, result.remainingBudget)
+            assertEquals(100_000L, result.totalBudget)
+            assertEquals(70_000L, result.usedBudget)
 
-            verify(exactly = 1) { cacheRepository.get(CacheNames.REMAINING_BUDGET, today, Long::class) }
+            verify(exactly = 1) { cacheRepository.get(CacheNames.TOTAL_BUDGET, today, Long::class) }
+            verify(exactly = 1) { cacheRepository.get(CacheNames.USED_BUDGET, today, Long::class) }
             verify(exactly = 0) { dailyRouletteService.readByRouletteDate(any()) }
         }
 
@@ -64,11 +74,20 @@ class GetRouletteUseCaseTest {
             // given
             val today = LocalDate.now()
             val dailyRoulette = mockk<DailyRoulette>()
-            every { dailyRoulette.remainingBudget } returns 7000L
+            every { dailyRoulette.totalBudget } returns 100_000L
+            every { dailyRoulette.usedBudget } returns 70_000L
 
             every {
                 cacheRepository.get(
-                    CacheNames.REMAINING_BUDGET,
+                    CacheNames.TOTAL_BUDGET,
+                    today.toString(),
+                    Long::class
+                )
+            } returns null
+
+            every {
+                cacheRepository.get(
+                    CacheNames.USED_BUDGET,
                     today.toString(),
                     Long::class
                 )
@@ -79,10 +98,11 @@ class GetRouletteUseCaseTest {
             } returns dailyRoulette
 
             // when
-            val result = getRouletteUseCase.getTodayRemainingBudget()
+            val result = getRouletteUseCase.getTodayBudget()
 
             // then
-            assertEquals(7000L, result.remainingBudget)
+            assertEquals(100_000L, result.totalBudget)
+            assertEquals(70_000L, result.usedBudget)
 
             verify(exactly = 1) { dailyRouletteService.readByRouletteDate(today) }
         }
@@ -94,7 +114,15 @@ class GetRouletteUseCaseTest {
 
             every {
                 cacheRepository.get(
-                    CacheNames.REMAINING_BUDGET,
+                    CacheNames.TOTAL_BUDGET,
+                    today.toString(),
+                    Long::class
+                )
+            } returns null
+
+            every {
+                cacheRepository.get(
+                    CacheNames.USED_BUDGET,
                     today.toString(),
                     Long::class
                 )
@@ -104,7 +132,7 @@ class GetRouletteUseCaseTest {
 
             // when
             val exception = assertThrows<RouletteException> {
-                getRouletteUseCase.getTodayRemainingBudget()
+                getRouletteUseCase.getTodayBudget()
             }
 
             // then
