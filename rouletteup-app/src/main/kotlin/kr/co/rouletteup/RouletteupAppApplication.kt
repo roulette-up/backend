@@ -1,11 +1,11 @@
-package kr.co.rouletteup.admin
+package kr.co.rouletteup
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RouletteupAdminApplication
+class RouletteupAppApplication
 
 fun main(args: Array<String>) {
-    runApplication<RouletteupAdminApplication>(*args)
+    runApplication<RouletteupAppApplication>(*args)
 }
