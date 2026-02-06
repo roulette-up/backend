@@ -19,6 +19,13 @@ class PointRecordService(
     fun readAllByUserId(userId: Long, pageable: Pageable): Page<PointRecord> =
         pointRecordRepository.findAllByUserId(userId, pageable)
 
+    fun readExpiringOn(expiresAt: LocalDate): List<PointRecord> =
+        pointRecordRepository.findExpiringOn(expiresAt)
+
     fun existsByUserIdAndRouletteDate(userId: Long, rouletteDate: LocalDate): Boolean =
         pointRecordRepository.existsByUserIdAndRouletteDate(userId, rouletteDate)
+
+    fun updateStatusToExpiredByDate(expiresAt: LocalDate) {
+        pointRecordRepository.updateStatusToExpiredByDate(expiresAt)
+    }
 }
