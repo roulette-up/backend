@@ -1,8 +1,8 @@
 package kr.co.rouletteup.app.roulette.controller
 
 import kr.co.rouletteup.app.roulette.api.RouletteApi
-import kr.co.rouletteup.app.roulette.usercase.GetRouletteUseCase
-import kr.co.rouletteup.app.roulette.usercase.ParticipateRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.GetRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.ParticipateRouletteUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

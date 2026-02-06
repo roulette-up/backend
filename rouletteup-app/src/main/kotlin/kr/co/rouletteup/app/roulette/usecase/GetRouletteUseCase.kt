@@ -1,4 +1,4 @@
-package kr.co.rouletteup.app.roulette.usercase
+package kr.co.rouletteup.app.roulette.usecase
 
 import java.time.LocalDate
 import kr.co.rouletteup.app.roulette.dto.RouletteRes

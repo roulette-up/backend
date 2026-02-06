@@ -2,8 +2,8 @@ package kr.co.rouletteup.app.roulette.controller
 
 import kr.co.rouletteup.app.roulette.dto.RouletteParticipateRes
 import kr.co.rouletteup.app.roulette.dto.RouletteRes
-import kr.co.rouletteup.app.roulette.usercase.GetRouletteUseCase
-import kr.co.rouletteup.app.roulette.usercase.ParticipateRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.GetRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.ParticipateRouletteUseCase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

@@ -1,4 +1,4 @@
-package kr.co.rouletteup.app.roulette.usercase
+package kr.co.rouletteup.app.roulette.usecase
 
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
