@@ -3,6 +3,7 @@ package kr.co.rouletteup.app.roulette.usercase
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
+import kr.co.rouletteup.app.roulette.dto.RouletteParticipateRes
 import kr.co.rouletteup.app.roulette.service.RouletteParticipationService
 import kr.co.rouletteup.common.response.error.type.GlobalErrorType
 import kr.co.rouletteup.common.response.exception.GlobalException
@@ -38,8 +39,9 @@ class ParticipateRouletteUseCase(
      * 룰렛 참여 진입점
      *
      * @param userId 사용자 ID(PK)
+     * @return 당첨된 포인트 DTO
      */
-    fun participate(userId: Long) {
+    fun participate(userId: Long): RouletteParticipateRes {
         val today = LocalDate.now()
 
         // 1일 1회 검증
@@ -54,7 +56,7 @@ class ParticipateRouletteUseCase(
         }
 
         try {
-            participateWithLock(userId, today)
+            return RouletteParticipateRes.of(participateWithLock(userId, today))
         } finally {
             lock.unlock()
         }
@@ -77,8 +79,9 @@ class ParticipateRouletteUseCase(
      *
      * @param userId 사용자 ID(PK)
      * @param date 룰렛 참여 날짜
+     * @return 당첨된 포인트
      */
-    private fun participateWithLock(userId: Long, date: LocalDate) {
+    private fun participateWithLock(userId: Long, date: LocalDate): Long {
         // 총 예산 및 사용 예산 캐시 조회 (없으면 DB 조회)
         val (total, used) = loadBudgetFromCacheOrDb(date)
 
@@ -100,6 +103,8 @@ class ParticipateRouletteUseCase(
         cacheRepository.put(
             CacheNames.USED_BUDGET, date.toString(), used + reward
         )
+
+        return reward
     }
 
     /**
