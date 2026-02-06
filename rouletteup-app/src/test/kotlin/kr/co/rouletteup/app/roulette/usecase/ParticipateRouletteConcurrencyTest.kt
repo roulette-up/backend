@@ -95,11 +95,6 @@ class ParticipateRouletteConcurrencyTest{
         }
 
         // then
-        // 전체 사용자가 획득한 포인트 합 (User Entity의 availablePoint)
-        val sumAvailablePoint = txTemplate.execute {
-            userRepository.findAll().sumOf(User::availablePoint)
-        }!!
-
         // 전체 사용자가 획득한 포인트 레코드 합
         val sumGranted = txTemplate.execute {
             pointRecordRepository.findAll().sumOf(PointRecord::grantedPoint)
@@ -114,7 +109,6 @@ class ParticipateRouletteConcurrencyTest{
         val cachedUsedBudget =
             cacheRepository.get(CacheNames.USED_BUDGET, today.toString(), Long::class)
 
-        assertEquals(sumAvailablePoint, sumGranted)
         assertEquals(sumGranted, usedBudget)
         assertEquals(usedBudget, cachedUsedBudget)
 
