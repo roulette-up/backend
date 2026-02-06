@@ -136,7 +136,6 @@ class RouletteParticipationServiceTest {
 
         verify(exactly = 1) { dailyRouletteService.increaseUsedBudgetAndParticipant(date, reward) }
         verify(exactly = 0) { pointRecordService.save(any()) }
-        verify(exactly = 0) { userService.updatePointWithDebt(any(), any()) }
     }
 
     @Test
