@@ -9,7 +9,6 @@ import io.mockk.verify
 import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kr.co.rouletteup.app.roulette.usercase.GetRouletteUseCase
 import kr.co.rouletteup.domain.roulette.entity.DailyRoulette
 import kr.co.rouletteup.domain.roulette.exception.RouletteErrorType
 import kr.co.rouletteup.domain.roulette.exception.RouletteException

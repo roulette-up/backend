@@ -120,4 +120,45 @@ interface RouletteApi {
     )
     fun getTodayBudget(): ResponseEntity<*>
 
+    @Operation(summary = "금일 룰렛 참여 확인", description = "금일 룰렛 참여 확인 API")
+    @ApiResponses(
+        ApiResponse(
+            responseCode = "200",
+            description = "금일 룰렛 참여 확인 성공",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "이미 룰렛 참여 했음",
+                            value = """
+                        {
+                            "code": 200,
+                            "message": "요청이 성공하였습니다.",
+                            "data": {
+                                "participated": true
+                            }
+                        }
+                        """
+                        ),
+                        ExampleObject(
+                            name = "룰렛 참여 안했음",
+                            value = """
+                        {
+                            "code": 200,
+                            "message": "요청이 성공하였습니다.",
+                            "data": {
+                                "participated": false
+                            }
+                        }
+                        """
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    fun checkTodayParticipation(
+        @RequestHeader(value = "X-User-Id") userId: Long,
+    ): ResponseEntity<*>
 }

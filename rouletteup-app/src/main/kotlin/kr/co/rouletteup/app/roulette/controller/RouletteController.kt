@@ -1,8 +1,9 @@
 package kr.co.rouletteup.app.roulette.controller
 
 import kr.co.rouletteup.app.roulette.api.RouletteApi
-import kr.co.rouletteup.app.roulette.usercase.GetRouletteUseCase
-import kr.co.rouletteup.app.roulette.usercase.ParticipateRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.CheckRouletteParticipationUseCase
+import kr.co.rouletteup.app.roulette.usecase.GetRouletteUseCase
+import kr.co.rouletteup.app.roulette.usecase.ParticipateRouletteUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class RouletteController(
     private val getRouletteUseCase: GetRouletteUseCase,
     private val participateRouletteUseCase: ParticipateRouletteUseCase,
+    private val checkRouletteParticipationUseCase: CheckRouletteParticipationUseCase,
 ) : RouletteApi {
 
     @PostMapping("/today/participation")
@@ -33,6 +35,16 @@ class RouletteController(
         ResponseEntity.ok(
             SuccessResponse.from(
                 getRouletteUseCase.getTodayBudget()
+            )
+        )
+
+    @GetMapping("/today/participation")
+    override fun checkTodayParticipation(
+        @RequestHeader(value = "X-User-Id") userId: Long,
+    ): ResponseEntity<*> =
+        ResponseEntity.ok(
+            SuccessResponse.from(
+                checkRouletteParticipationUseCase.checkTodayParticipation(userId)
             )
         )
 }

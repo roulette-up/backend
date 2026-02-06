@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import kr.co.rouletteup.app.roulette.usercase.ParticipateRouletteUseCase
 import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.repository.PointRecordRepository
 import kr.co.rouletteup.domain.roulette.repository.DailyRouletteRepository
