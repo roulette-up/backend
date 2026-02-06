@@ -16,19 +16,33 @@ interface RouletteApi {
     @ApiResponses(
         ApiResponse(
             responseCode = "200",
-            description = "룰렛 참여 성공",
+            description = "룰렛 참여 성공. reward: 당첨금액, credit: 실제 적립 금액 (부채 상환 경우의 수)",
             content = [
                 Content(
                     mediaType = "application/json",
                     examples = [
                         ExampleObject(
-                            name = "룰렛 참여 성공",
+                            name = "부채 상환 없을 경우",
                             value = """
                         {
                             "code": 200,
                             "message": "요청이 성공하였습니다.",
                             "data": {
-                                "reward": 300
+                                "reward": 300,
+                                "credit": 300
+                            }
+                        }
+                        """
+                        ),
+                        ExampleObject(
+                            name = "부채 상환 있을 경우",
+                            value = """
+                        {
+                            "code": 200,
+                            "message": "요청이 성공하였습니다.",
+                            "data": {
+                                "reward": 300,
+                                "credit": 100
                             }
                         }
                         """
@@ -61,6 +75,26 @@ interface RouletteApi {
                             "message": "금일 룰렛 예산이 모두 소진되었습니다."
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "실패 - 사용자 존재하지 않음",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "사용자 존재하지 않음",
+                            value = """
+                            {
+                              "code": "U001",
+                              "message": "사용자가 존재하지 않습니다."
+                            }
+                            """
                         )
                     ]
                 )
