@@ -39,7 +39,7 @@ class RouletteController(
         )
 
     @GetMapping("/today/participation")
-    fun checkTodayParticipation(
+    override fun checkTodayParticipation(
         @RequestHeader(value = "X-User-Id") userId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
