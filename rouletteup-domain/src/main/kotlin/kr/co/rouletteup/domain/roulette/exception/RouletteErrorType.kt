@@ -14,5 +14,6 @@ enum class RouletteErrorType(
 ) : BaseErrorType {
 
     NOT_FOUND(StatusCode.NOT_FOUND, "R001", "룰렛이 존재하지 않습니다."),
+    BUDGET_EXHAUSTED(StatusCode.BAD_REQUEST, "R002", "금일 룰렛 예산이 모두 소진되었습니다."),
     ;
 }
