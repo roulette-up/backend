@@ -19,4 +19,8 @@ class DailyRouletteService(
 
     fun existsToday(today: LocalDate): Boolean =
         dailyRouletteRepository.existsByRouletteDate(today)
+
+    fun increaseUsedBudgetAndParticipant(date: LocalDate, budget: Long): Int =
+        dailyRouletteRepository.increaseUsedBudgetAndParticipant(date, budget)
+
 }
