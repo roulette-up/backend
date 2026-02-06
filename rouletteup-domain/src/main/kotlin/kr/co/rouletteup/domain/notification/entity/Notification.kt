@@ -52,4 +52,8 @@ class Notification(
     @Column(name = "user_id", nullable = false)
     var userId: Long = userId
         protected set
+
+    fun markAsRead() {
+        this.isRead = true
+    }
 }
