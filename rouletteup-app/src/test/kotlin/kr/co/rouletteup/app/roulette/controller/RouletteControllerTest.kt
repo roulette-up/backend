@@ -2,6 +2,8 @@ package kr.co.rouletteup.app.roulette.controller
 
 import kr.co.rouletteup.app.roulette.dto.RouletteParticipateRes
 import kr.co.rouletteup.app.roulette.dto.RouletteRes
+import kr.co.rouletteup.app.roulette.dto.RouletteStatusRes
+import kr.co.rouletteup.app.roulette.usecase.CheckRouletteParticipationUseCase
 import kr.co.rouletteup.app.roulette.usecase.GetRouletteUseCase
 import kr.co.rouletteup.app.roulette.usecase.ParticipateRouletteUseCase
 import org.junit.jupiter.api.DisplayName
@@ -25,6 +27,9 @@ class RouletteControllerTest {
 
     @MockitoBean
     private lateinit var getRouletteUseCase: GetRouletteUseCase
+
+    @MockitoBean
+    private lateinit var checkRouletteParticipationUseCase: CheckRouletteParticipationUseCase
 
     @MockitoBean
     private lateinit var participateRouletteUseCase: ParticipateRouletteUseCase
@@ -82,6 +87,36 @@ class RouletteControllerTest {
                     jsonPath("$.message").value("요청이 성공하였습니다.")
                     jsonPath("$.data.totalBudget").value(response.totalBudget)
                     jsonPath("$.data.usedBudget").value(response.usedBudget)
+                }
+        }
+    }
+
+    @Nested
+    @DisplayName("금일 룰렛 참여 확인 API")
+    inner class CheckTodayParticipation {
+
+        @Test
+        fun `X-User-Id 헤더로 룰렛 참여 확인 요청`() {
+            // given
+            val userId = 1L
+            val response = RouletteStatusRes(true)
+
+            given(checkRouletteParticipationUseCase.checkTodayParticipation(userId)).willReturn(response)
+
+            // when
+            val resultActions = mockMvc.get("/api/v1/roulettes/today/participation") {
+                header("X-User-Id", userId)
+                accept = MediaType.APPLICATION_JSON
+            }
+
+            // then
+            resultActions
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    jsonPath("$.code").value(200)
+                    jsonPath("$.message").value("요청이 성공하였습니다.")
+                    jsonPath("$.data.participated").value(true)
                 }
         }
     }
