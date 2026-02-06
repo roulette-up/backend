@@ -1,5 +1,6 @@
 package kr.co.rouletteup.app.notification.controller
 
+import kr.co.rouletteup.app.notification.api.NotificationApi
 import kr.co.rouletteup.app.notification.usecase.GetNotificationUseCase
 import kr.co.rouletteup.app.notification.usecase.MarkNotificationAsReadUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController
 class NotificationController(
     private val getNotificationUseCase: GetNotificationUseCase,
     private val markNotificationAsReadUseCase: MarkNotificationAsReadUseCase,
-) {
+) : NotificationApi {
 
     @GetMapping
-    fun getNotifications(
+    override fun getNotifications(
         @RequestHeader("X-User-Id") userId: Long,
         @RequestParam(required = false) cursorId: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
@@ -36,7 +37,7 @@ class NotificationController(
         )
 
     @PatchMapping("/{notificationId}/read-confirm")
-    fun markAsRead(
+    override fun markAsRead(
         @PathVariable notificationId: Long,
     ): ResponseEntity<*> {
         markNotificationAsReadUseCase.markNotificationAsRead(notificationId)
