@@ -1,5 +1,6 @@
 package kr.co.rouletteup.app.product.controller
 
+import kr.co.rouletteup.app.product.api.ProductApi
 import kr.co.rouletteup.app.product.usecase.GetProductUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/products")
 class ProductController(
     private val gerProductUseCase: GetProductUseCase,
-) {
+) : ProductApi {
 
     @GetMapping
-    fun getProducts(
+    override fun getProducts(
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
@@ -28,7 +29,7 @@ class ProductController(
         )
 
     @GetMapping("/{productId}")
-    fun getProductById(
+    override fun getProductById(
         @PathVariable productId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
