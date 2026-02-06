@@ -15,4 +15,8 @@ class UserService(
     fun readByNickname(nickname: String): User? =
         userRepository.findByNickname(nickname)
 
+    fun updatePointWithDebt(id: Long, point: Long) {
+        userRepository.updatePointWithDebt(id, point)
+    }
+
 }
