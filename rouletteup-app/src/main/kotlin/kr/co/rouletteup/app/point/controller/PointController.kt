@@ -1,5 +1,6 @@
 package kr.co.rouletteup.app.point.controller
 
+import kr.co.rouletteup.app.point.api.PointApi
 import kr.co.rouletteup.app.point.usecase.GetPointRecordUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/points")
 class PointController(
     private val getPointRecordUseCase: GetPointRecordUseCase,
-) {
+) : PointApi {
 
     @GetMapping("/records")
-    fun getMyRecords(
+    override fun getMyRecords(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
