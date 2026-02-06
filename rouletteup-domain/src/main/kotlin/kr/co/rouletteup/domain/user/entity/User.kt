@@ -11,9 +11,9 @@ import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 
 @SQLRestriction("deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 class User(
     nickname: String,
     role: Role,

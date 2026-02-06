@@ -21,7 +21,7 @@ class GetRouletteUseCase(
      * - 총 예산 및 사용 예산이 캐시에 있다면, 반환
      * - 캐시에 없다면, DB에서 조회 후 반환
      *
-     * @return 남은 예산 정보 DTO
+     * @return 예산 정보 DTO
      */
     @Transactional(readOnly = true)
     fun getTodayBudget(): RouletteRes {
@@ -29,16 +29,12 @@ class GetRouletteUseCase(
 
         // 총 예산 캐시 조회
         val cachedTotalBudget = cacheRepository.get(
-            cacheName = CacheNames.TOTAL_BUDGET,
-            key = today.toString(),
-            type = Long::class
+            CacheNames.TOTAL_BUDGET, today.toString(), Long::class
         )
 
         // 사용 예산 캐시 조회
         val cachedUsedBudget = cacheRepository.get(
-            cacheName = CacheNames.USED_BUDGET,
-            key = today.toString(),
-            type = Long::class
+            CacheNames.USED_BUDGET, today.toString(), Long::class
         )
 
         if (cachedTotalBudget != null && cachedUsedBudget != null) {
