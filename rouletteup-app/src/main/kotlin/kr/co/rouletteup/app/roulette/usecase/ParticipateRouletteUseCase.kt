@@ -39,7 +39,7 @@ class ParticipateRouletteUseCase(
      * 룰렛 참여 진입점
      *
      * @param userId 사용자 ID(PK)
-     * @return 당첨된 포인트 DTO
+     * @return 당첨된 포인트 및 실제 적립 포인트 DTO
      */
     fun participate(userId: Long): RouletteParticipateRes {
         val today = LocalDate.now()
@@ -56,7 +56,7 @@ class ParticipateRouletteUseCase(
         }
 
         try {
-            return RouletteParticipateRes.of(participateWithLock(userId, today))
+            return participateWithLock(userId, today)
         } finally {
             lock.unlock()
         }
@@ -79,9 +79,9 @@ class ParticipateRouletteUseCase(
      *
      * @param userId 사용자 ID(PK)
      * @param date 룰렛 참여 날짜
-     * @return 당첨된 포인트
+     * @return 당첨된 포인트 및 실제 적립 포인트 DTO
      */
-    private fun participateWithLock(userId: Long, date: LocalDate): Long {
+    private fun participateWithLock(userId: Long, date: LocalDate): RouletteParticipateRes {
         // 총 예산 및 사용 예산 캐시 조회 (없으면 DB 조회)
         val (total, used) = loadBudgetFromCacheOrDb(date)
 
@@ -94,8 +94,8 @@ class ParticipateRouletteUseCase(
         // 잔여 포인트 기준 포인트 랜덤 생성
         val reward = RouletteRandomUtil.generateReward(remaining)
 
-        // 룰렛 정보 업데이트 및 참여 기록 트랜잭션 처리
-        rouletteParticipationService.participateAndRecordPoint(
+        // 룰렛 정보 업데이트 및 참여 기록 트랜잭션 처리. 실제 적립 포인트 반환 (부채 상환 경우의 수)
+        val credit = rouletteParticipationService.participateAndRecordPoint(
             userId, date, reward
         )
 
@@ -104,7 +104,7 @@ class ParticipateRouletteUseCase(
             CacheNames.USED_BUDGET, date.toString(), used + reward
         )
 
-        return reward
+        return RouletteParticipateRes.of(reward, credit)
     }
 
     /**
