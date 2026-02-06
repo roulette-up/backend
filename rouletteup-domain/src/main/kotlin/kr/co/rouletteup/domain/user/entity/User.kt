@@ -17,17 +17,11 @@ import org.hibernate.annotations.SQLRestriction
 class User(
     nickname: String,
     role: Role,
-    availablePoint: Long = 0,
     pointDebt: Long = 0,
 ) : BaseEntity() {
 
     @Column(length = 30, nullable = false, unique = true)
     var nickname: String = nickname
-        protected set
-
-    // 사용 가능한 포인트 총합
-    @Column(name = "available_point")
-    var availablePoint: Long = availablePoint
         protected set
 
     // 포인트 부채 - 특정 포인트를 사용했지만, 어드민이 회수하는 경우
