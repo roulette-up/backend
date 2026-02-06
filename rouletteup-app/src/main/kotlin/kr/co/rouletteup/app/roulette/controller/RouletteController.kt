@@ -19,7 +19,7 @@ class RouletteController(
 ) : RouletteApi {
 
     @PostMapping("/today/participation")
-    fun participate(
+    override fun participate(
         @RequestHeader(value = "X-User-Id") userId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
