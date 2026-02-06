@@ -33,4 +33,15 @@ class User(
     @Column(nullable = false)
     var role: Role = role
         protected set
+
+    /**
+     * 포인트 부채 상환 편의 메서드
+     */
+    fun repayDebt(point: Long): Long {
+        if (pointDebt <= 0L) return 0L
+
+        val repaid = minOf(pointDebt, point)
+        pointDebt -= repaid
+        return repaid
+    }
 }
