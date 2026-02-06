@@ -42,7 +42,7 @@ class RouletteControllerTest {
         fun `X-User-Id 헤더로 참여 요청`() {
             // given
             val userId = 1L
-            val participateRes = RouletteParticipateRes(300L)
+            val participateRes = RouletteParticipateRes(300L, 300L)
             given(participateRouletteUseCase.participate(userId)).willReturn(participateRes)
 
             // when

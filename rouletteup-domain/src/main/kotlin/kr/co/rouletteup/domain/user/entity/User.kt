@@ -17,17 +17,11 @@ import org.hibernate.annotations.SQLRestriction
 class User(
     nickname: String,
     role: Role,
-    availablePoint: Long = 0,
     pointDebt: Long = 0,
 ) : BaseEntity() {
 
     @Column(length = 30, nullable = false, unique = true)
     var nickname: String = nickname
-        protected set
-
-    // 사용 가능한 포인트 총합
-    @Column(name = "available_point")
-    var availablePoint: Long = availablePoint
         protected set
 
     // 포인트 부채 - 특정 포인트를 사용했지만, 어드민이 회수하는 경우
@@ -39,4 +33,15 @@ class User(
     @Column(nullable = false)
     var role: Role = role
         protected set
+
+    /**
+     * 포인트 부채 상환 편의 메서드
+     */
+    fun repayDebt(point: Long): Long {
+        if (pointDebt <= 0L) return 0L
+
+        val repaid = minOf(pointDebt, point)
+        pointDebt -= repaid
+        return repaid
+    }
 }
