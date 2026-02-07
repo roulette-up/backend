@@ -22,9 +22,19 @@ class ProductService(
     fun readAll(pageable: Pageable): Page<Product> =
         productRepository.findAll(pageable)
 
+    fun readAllIncludeDeleted(pageable: Pageable): Page<Product> =
+        productRepository.findAllIncludeDeleted(pageable)
+
+    fun readByIdIncludeDeleted(id: Long): Product? =
+        productRepository.findByIdIncludeDeleted(id)
+
     fun decreaseStock(id: Long, amount: Int): Int =
         productRepository.decreaseStock(id, amount)
 
     fun increaseStock(id: Long, amount: Int): Int =
         productRepository.increaseStock(id, amount)
+
+    fun deleteById(id: Long) {
+        productRepository.deleteById(id)
+    }
 }
