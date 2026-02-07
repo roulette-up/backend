@@ -67,4 +67,57 @@ interface AdminRouletteApi {
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*>
 
+    @Operation(summary = "오늘 룰렛 정보 조회", description = "오늘 룰렛 정보 API")
+    @ApiResponses(
+        ApiResponse(
+            responseCode = "200",
+            description = "오늘 룰렛 정보 조회 성공",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "오늘 룰렛 정보 조회 성공",
+                            value = """
+                        {
+                            "code": 200,
+                            "message": "요청이 성공하였습니다.",
+                            "data": {
+                                "id": 1,
+                                "rouletteDate": "2026-02-07",
+                                "totalBudget": 100000,
+                                "usedBudget": 775,
+                                "participantCount": 1,
+                                "deletedAt": null
+                            }
+                        }
+                        """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "실패 - 룰렛 존재하지 않음",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "룰렛 존재하지 않음",
+                            value = """
+                            {
+                              "code": "R001",
+                              "message": "룰렛이 존재하지 않습니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    fun getTodayRoulette(): ResponseEntity<*>
+
 }
