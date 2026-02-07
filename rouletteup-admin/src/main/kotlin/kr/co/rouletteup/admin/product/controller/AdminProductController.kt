@@ -1,6 +1,7 @@
 package kr.co.rouletteup.admin.product.controller
 
 import jakarta.validation.Valid
+import kr.co.rouletteup.admin.product.api.AdminProductApi
 import kr.co.rouletteup.admin.product.dto.AdminProductReq
 import kr.co.rouletteup.admin.product.usecase.CreateProductUseCase
 import kr.co.rouletteup.admin.product.usecase.DeleteProductUseCase
@@ -28,10 +29,10 @@ class AdminProductController(
     private val getProductUseCase: GetProductUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
-) {
+) : AdminProductApi {
 
     @PostMapping
-    fun createProduct(
+    override fun createProduct(
         @RequestBody @Valid request: AdminProductReq.Create,
     ): ResponseEntity<*> {
         createProductUseCase.createProduct(request)
@@ -39,7 +40,7 @@ class AdminProductController(
     }
 
     @GetMapping
-    fun getProducts(
+    override fun getProducts(
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
@@ -49,7 +50,7 @@ class AdminProductController(
         )
 
     @GetMapping("/{productId}")
-    fun getProductById(
+    override fun getProductById(
         @PathVariable productId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
@@ -59,7 +60,7 @@ class AdminProductController(
         )
 
     @PutMapping("/{productId}")
-    fun updateProductInfo(
+    override fun updateProductInfo(
         @PathVariable productId: Long,
         @RequestBody @Valid request: AdminProductReq.Update,
     ): ResponseEntity<*> {
@@ -68,7 +69,7 @@ class AdminProductController(
     }
 
     @PatchMapping("/{productId}/stock")
-    fun updateProductStock(
+    override fun updateProductStock(
         @PathVariable productId: Long,
         @RequestBody @Valid request: AdminProductReq.UpdateStock,
     ): ResponseEntity<*> {
@@ -77,7 +78,7 @@ class AdminProductController(
     }
 
     @DeleteMapping("/{productId}")
-    fun deleteProduct(
+    override fun deleteProduct(
         @PathVariable productId: Long,
     ): ResponseEntity<*> {
         deleteProductUseCase.deleteProduct(productId)

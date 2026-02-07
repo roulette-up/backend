@@ -26,7 +26,7 @@ interface AdminUserApi {
                     mediaType = "application/json",
                     examples = [
                         ExampleObject(
-                            name = "상품 페이징 조회 성공",
+                            name = "사용자 페이징 조회 성공",
                             value = """
                         {
                             "code": 200,
