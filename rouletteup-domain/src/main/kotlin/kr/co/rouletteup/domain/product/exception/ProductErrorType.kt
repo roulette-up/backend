@@ -13,5 +13,6 @@ enum class ProductErrorType(
 ) : BaseErrorType {
 
     NOT_FOUND(StatusCode.NOT_FOUND, "PR001", "상품이 존재하지 않습니다."),
+    INSUFFICIENT_STOCK(StatusCode.BAD_REQUEST, "PR002", "재고는 0 미만이 될 수 없습니다."),
     ;
 }
