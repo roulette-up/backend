@@ -1,10 +1,12 @@
 package kr.co.rouletteup.app.roulette.service
 
 import java.time.LocalDate
+import kr.co.rouletteup.domain.point.entity.PointDebtLedger
 import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.exception.PointErrorType
 import kr.co.rouletteup.domain.point.exception.PointException
 import kr.co.rouletteup.domain.point.policy.PointPolicy
+import kr.co.rouletteup.domain.point.service.PointDebtLedgerService
 import kr.co.rouletteup.domain.point.service.PointRecordService
 import kr.co.rouletteup.domain.point.type.PointStatus
 import kr.co.rouletteup.domain.roulette.exception.RouletteErrorType
@@ -22,6 +24,7 @@ class RouletteParticipationService(
     private val dailyRouletteService: DailyRouletteService,
     private val pointRecordService: PointRecordService,
     private val userService: UserService,
+    private val pointDebtLedgerService: PointDebtLedgerService,
 ) {
 
     /**
@@ -50,7 +53,7 @@ class RouletteParticipationService(
 
         // 포인트 기록 생성
         try {
-            pointRecordService.save(
+            val pointRecord = pointRecordService.save(
                 PointRecord(
                     grantedPoint = reward,
                     remainingPoint = credit,
@@ -60,6 +63,17 @@ class RouletteParticipationService(
                     rouletteDate = date
                 )
             )
+
+            // 부채금 삭감 내역이 있으면 해당 기록 저장
+            if (repaid > 0) {
+                pointDebtLedgerService.save(
+                    PointDebtLedger(
+                        pointRecordId = pointRecord.id!!,
+                        repaidAmount = repaid,
+                        user = user
+                    )
+                )
+            }
         } catch (e: DataIntegrityViolationException) {
             throw PointException(PointErrorType.ALREADY_PARTICIPATED)
         }
