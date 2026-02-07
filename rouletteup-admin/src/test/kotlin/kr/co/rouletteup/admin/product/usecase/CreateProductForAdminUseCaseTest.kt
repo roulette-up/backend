@@ -16,13 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 
 @ExtendWith(MockKExtension::class)
-class CreateProductUseCaseTest {
+class CreateProductForAdminUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
 
     @InjectMockKs
-    private lateinit var createProductUseCase: CreateProductUseCase
+    private lateinit var createProductForAdminUseCase: CreateProductForAdminUseCase
 
     @Nested
     @DisplayName("상품 생성")
@@ -38,7 +38,7 @@ class CreateProductUseCaseTest {
             every { productService.save(product) } returns Unit
 
             // when
-            createProductUseCase.createProduct(request)
+            createProductForAdminUseCase.createProduct(request)
 
             // then
             verify(exactly = 1) { request.toEntity() }

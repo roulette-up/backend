@@ -5,10 +5,10 @@ import java.time.LocalDateTime
 import kr.co.rouletteup.admin.product.dto.AdminProductDetail
 import kr.co.rouletteup.admin.product.dto.AdminProductReq
 import kr.co.rouletteup.admin.product.dto.AdminProductSummary
-import kr.co.rouletteup.admin.product.usecase.CreateProductUseCase
-import kr.co.rouletteup.admin.product.usecase.DeleteProductUseCase
-import kr.co.rouletteup.admin.product.usecase.GetProductUseCase
-import kr.co.rouletteup.admin.product.usecase.UpdateProductUseCase
+import kr.co.rouletteup.admin.product.usecase.CreateProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.DeleteProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.GetProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.UpdateProductForAdminUseCase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -39,16 +39,16 @@ class AdminProductControllerTest {
     private lateinit var objectMapper: ObjectMapper
 
     @MockitoBean
-    private lateinit var createProductUseCase: CreateProductUseCase
+    private lateinit var createProductForAdminUseCase: CreateProductForAdminUseCase
 
     @MockitoBean
-    private lateinit var getProductUseCase: GetProductUseCase
+    private lateinit var getProductForAdminUseCase: GetProductForAdminUseCase
 
     @MockitoBean
-    private lateinit var updateProductUseCase: UpdateProductUseCase
+    private lateinit var updateProductForAdminUseCase: UpdateProductForAdminUseCase
 
     @MockitoBean
-    private lateinit var deleteProductUseCase: DeleteProductUseCase
+    private lateinit var deleteProductForAdminUseCase: DeleteProductForAdminUseCase
 
     @Nested
     @DisplayName("상품 생성 API")
@@ -62,7 +62,7 @@ class AdminProductControllerTest {
                 price = 1000L,
                 stockQuantity = 10,
             )
-            willDoNothing().given(createProductUseCase).createProduct(request)
+            willDoNothing().given(createProductForAdminUseCase).createProduct(request)
 
             // when
             val resultActions = mockMvc.post("/api/v1/admin/products") {
@@ -120,7 +120,7 @@ class AdminProductControllerTest {
             val pageable = PageRequest.of(0, 20)
             val page = PageImpl(emptyList<AdminProductSummary>(), pageable, 0)
 
-            given(getProductUseCase.getProducts(any()))
+            given(getProductForAdminUseCase.getProducts(any()))
                 .willReturn(page)
 
             // when
@@ -158,7 +158,7 @@ class AdminProductControllerTest {
                 null
             )
 
-            given(getProductUseCase.getProductById(productId))
+            given(getProductForAdminUseCase.getProductById(productId))
                 .willReturn(response)
 
             // when
@@ -189,7 +189,7 @@ class AdminProductControllerTest {
                 price = 2000L,
             )
 
-            willDoNothing().given(updateProductUseCase).updateProductInfo(productId, request)
+            willDoNothing().given(updateProductForAdminUseCase).updateProductInfo(productId, request)
 
             // when
             val resultActions = mockMvc.put("/api/v1/admin/products/$productId") {
@@ -245,7 +245,7 @@ class AdminProductControllerTest {
             val productId = 1L
             val request = AdminProductReq.UpdateStock(increaseStock = 3)
 
-            willDoNothing().given(updateProductUseCase).updateProductStock(productId, request)
+            willDoNothing().given(updateProductForAdminUseCase).updateProductStock(productId, request)
 
             // when
             val resultActions = mockMvc.patch("/api/v1/admin/products/$productId/stock") {
@@ -273,7 +273,7 @@ class AdminProductControllerTest {
         fun `성공 - 상품 삭제 요청이면 200을 반환한다`() {
             // given
             val productId = 1L
-            willDoNothing().given(deleteProductUseCase).deleteProduct(productId)
+            willDoNothing().given(deleteProductForAdminUseCase).deleteProduct(productId)
 
             // when
             val resultActions = mockMvc.delete("/api/v1/admin/products/$productId")

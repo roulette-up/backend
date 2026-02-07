@@ -3,10 +3,10 @@ package kr.co.rouletteup.admin.product.controller
 import jakarta.validation.Valid
 import kr.co.rouletteup.admin.product.api.AdminProductApi
 import kr.co.rouletteup.admin.product.dto.AdminProductReq
-import kr.co.rouletteup.admin.product.usecase.CreateProductUseCase
-import kr.co.rouletteup.admin.product.usecase.DeleteProductUseCase
-import kr.co.rouletteup.admin.product.usecase.GetProductUseCase
-import kr.co.rouletteup.admin.product.usecase.UpdateProductUseCase
+import kr.co.rouletteup.admin.product.usecase.CreateProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.DeleteProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.GetProductForAdminUseCase
+import kr.co.rouletteup.admin.product.usecase.UpdateProductForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -25,17 +25,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/admin/products")
 class AdminProductController(
-    private val createProductUseCase: CreateProductUseCase,
-    private val getProductUseCase: GetProductUseCase,
-    private val updateProductUseCase: UpdateProductUseCase,
-    private val deleteProductUseCase: DeleteProductUseCase,
+    private val createProductForAdminUseCase: CreateProductForAdminUseCase,
+    private val getProductForAdminUseCase: GetProductForAdminUseCase,
+    private val updateProductForAdminUseCase: UpdateProductForAdminUseCase,
+    private val deleteProductForAdminUseCase: DeleteProductForAdminUseCase,
 ) : AdminProductApi {
 
     @PostMapping
     override fun createProduct(
         @RequestBody @Valid request: AdminProductReq.Create,
     ): ResponseEntity<*> {
-        createProductUseCase.createProduct(request)
+        createProductForAdminUseCase.createProduct(request)
         return ResponseEntity.ok(SuccessResponse.ok())
     }
 
@@ -45,7 +45,7 @@ class AdminProductController(
     ): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
-                getProductUseCase.getProducts(pageable)
+                getProductForAdminUseCase.getProducts(pageable)
             )
         )
 
@@ -55,7 +55,7 @@ class AdminProductController(
     ): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
-                getProductUseCase.getProductById(productId)
+                getProductForAdminUseCase.getProductById(productId)
             )
         )
 
@@ -64,7 +64,7 @@ class AdminProductController(
         @PathVariable productId: Long,
         @RequestBody @Valid request: AdminProductReq.Update,
     ): ResponseEntity<*> {
-        updateProductUseCase.updateProductInfo(productId, request)
+        updateProductForAdminUseCase.updateProductInfo(productId, request)
         return ResponseEntity.ok(SuccessResponse.ok())
     }
 
@@ -73,7 +73,7 @@ class AdminProductController(
         @PathVariable productId: Long,
         @RequestBody @Valid request: AdminProductReq.UpdateStock,
     ): ResponseEntity<*> {
-        updateProductUseCase.updateProductStock(productId, request)
+        updateProductForAdminUseCase.updateProductStock(productId, request)
         return ResponseEntity.ok(SuccessResponse.ok())
     }
 
@@ -81,7 +81,7 @@ class AdminProductController(
     override fun deleteProduct(
         @PathVariable productId: Long,
     ): ResponseEntity<*> {
-        deleteProductUseCase.deleteProduct(productId)
+        deleteProductForAdminUseCase.deleteProduct(productId)
         return ResponseEntity.ok(SuccessResponse.ok())
     }
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CreateProductUseCase(
+class CreateProductForAdminUseCase(
     private val productService: ProductService,
 ) {
 

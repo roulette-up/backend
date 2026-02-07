@@ -28,13 +28,13 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 @ExtendWith(MockKExtension::class)
-class GetProductUseCaseTest {
+class GetProductForAdminUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
 
     @InjectMockKs
-    private lateinit var getProductUseCase: GetProductUseCase
+    private lateinit var getProductForAdminUseCase: GetProductForAdminUseCase
 
     @BeforeEach
     fun setUp() {
@@ -70,7 +70,7 @@ class GetProductUseCaseTest {
             every { AdminProductSummary.from(product2) } returns dto2
 
             // when
-            val result = getProductUseCase.getProducts(pageable)
+            val result = getProductForAdminUseCase.getProducts(pageable)
 
             // then
             assertThat(result.content).hasSize(2)
@@ -98,7 +98,7 @@ class GetProductUseCaseTest {
             every { AdminProductDetail.from(product) } returns expected
 
             // when
-            val result = getProductUseCase.getProductById(productId)
+            val result = getProductForAdminUseCase.getProductById(productId)
 
             // then
             assertEquals(expected, result)
@@ -115,7 +115,7 @@ class GetProductUseCaseTest {
 
             // when
             val exception = assertThrows<ProductException> {
-                getProductUseCase.getProductById(productId)
+                getProductForAdminUseCase.getProductById(productId)
             }
 
             // then
