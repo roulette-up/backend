@@ -15,6 +15,7 @@ import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.exception.PointErrorType
 import kr.co.rouletteup.domain.point.exception.PointException
 import kr.co.rouletteup.domain.point.policy.PointPolicy
+import kr.co.rouletteup.domain.point.service.PointDebtLedgerService
 import kr.co.rouletteup.domain.point.service.PointRecordService
 import kr.co.rouletteup.domain.point.type.PointStatus
 import kr.co.rouletteup.domain.roulette.exception.RouletteErrorType
@@ -39,6 +40,9 @@ class RouletteParticipationServiceTest {
     @MockK
     private lateinit var userService: UserService
 
+    @MockK
+    private lateinit var pointDebtLedgerService: PointDebtLedgerService
+
     @InjectMockKs
     private lateinit var rouletteParticipationService: RouletteParticipationService
 
@@ -58,7 +62,9 @@ class RouletteParticipationServiceTest {
         every { user.repayDebt(reward) } returns 200L
 
         val recordSlot = slot<PointRecord>()
-        every { pointRecordService.save(capture(recordSlot)) } just Runs
+        val savedPointRecord = mockk<PointRecord>(relaxed = true)
+        every { pointRecordService.save(capture(recordSlot)) } returns savedPointRecord
+        every { pointDebtLedgerService.save(any()) } just Runs
 
         // when
         rouletteParticipationService.participateAndRecordPoint(userId, date, reward)
@@ -66,10 +72,9 @@ class RouletteParticipationServiceTest {
         // then
         verify(exactly = 1) { dailyRouletteService.increaseUsedBudgetAndParticipant(date, reward) }
         verify(exactly = 1) { userService.readById(userId) }
-
         verify(exactly = 1) { user.repayDebt(reward) }
-
         verify(exactly = 1) { pointRecordService.save(any()) }
+        verify(exactly = 1) { pointDebtLedgerService.save(any()) }
 
         val saved = recordSlot.captured
         assertEquals(reward, saved.grantedPoint)
@@ -96,7 +101,9 @@ class RouletteParticipationServiceTest {
         every { user.repayDebt(reward) } returns 500L
 
         val recordSlot = slot<PointRecord>()
-        every { pointRecordService.save(capture(recordSlot)) } just Runs
+        val savedPointRecord = mockk<PointRecord>(relaxed = true)
+        every { pointRecordService.save(capture(recordSlot)) } returns savedPointRecord
+        every { pointDebtLedgerService.save(any()) } just Runs
 
         // when
         rouletteParticipationService.participateAndRecordPoint(userId, date, reward)
@@ -106,6 +113,7 @@ class RouletteParticipationServiceTest {
         verify(exactly = 1) { userService.readById(userId) }
         verify(exactly = 1) { user.repayDebt(reward) }
         verify(exactly = 1) { pointRecordService.save(any()) }
+        verify(exactly = 1) { pointDebtLedgerService.save(any()) }
 
         val saved = recordSlot.captured
         assertEquals(reward, saved.grantedPoint)

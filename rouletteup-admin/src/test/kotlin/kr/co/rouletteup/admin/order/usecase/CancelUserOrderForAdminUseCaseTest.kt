@@ -1,11 +1,14 @@
 package kr.co.rouletteup.admin.order.usecase
 
+import io.mockk.Runs
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import kr.co.rouletteup.admin.order.service.CanceledPointRefundService
 import kr.co.rouletteup.domain.order.entity.Order
 import kr.co.rouletteup.domain.order.entity.OrderPointUsage
 import kr.co.rouletteup.domain.order.exception.OrderErrorType
@@ -38,6 +41,9 @@ class CancelUserOrderForAdminUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
+
+    @MockK
+    private lateinit var canceledPointRefundService: CanceledPointRefundService
 
     @InjectMockKs
     private lateinit var cancelUserOrderForAdminUseCase: CancelUserOrderForAdminUseCase
@@ -80,6 +86,7 @@ class CancelUserOrderForAdminUseCaseTest {
             )
             every { pointRecord1.id } returns 100L
             every { pointRecord2.id } returns 101L
+            every { canceledPointRefundService.refundCanceledPointFlow(any(), any()) } just Runs
 
             // when
             cancelUserOrderForAdminUseCase.cancelUserOrder(orderId)
@@ -87,8 +94,8 @@ class CancelUserOrderForAdminUseCaseTest {
             // then
             verify(exactly = 1) { order.cancelByAdmin() }
             verify(exactly = 1) { orderPointUsageService.readByOrderId(orderId) }
-            verify(exactly = 1) { pointRecord1.refundByAdmin(300L) }
-            verify(exactly = 1) { pointRecord2.refundByAdmin(200L) }
+            verify(exactly = 1) { pointRecord1.restore(300L) }
+            verify(exactly = 1) { pointRecord2.restore(200L) }
             verify(exactly = 1) { productService.increaseStock(10L, 2) }
         }
 

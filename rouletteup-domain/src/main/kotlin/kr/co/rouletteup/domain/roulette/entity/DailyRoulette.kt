@@ -38,4 +38,16 @@ class DailyRoulette(
     @Column(name = "participant_count", nullable = false)
     var participantCount: Int = participantCount
         protected set
+
+    /**
+     * 사용 내역 감소 편의 메서드
+     * - 포인트 회수에 사용
+     */
+    fun decreaseUsedBudget(amount: Long) {
+        usedBudget -= amount
+
+        if (usedBudget < 0) {
+            usedBudget = 0
+        }
+    }
 }

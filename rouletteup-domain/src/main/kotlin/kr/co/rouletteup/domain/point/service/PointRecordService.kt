@@ -6,6 +6,7 @@ import kr.co.rouletteup.domain.point.repository.PointRecordRepository
 import kr.co.rouletteup.domain.point.type.PointStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,9 +14,11 @@ class PointRecordService(
     private val pointRecordRepository: PointRecordRepository,
 ) {
 
-    fun save(pointRecord: PointRecord) {
+    fun save(pointRecord: PointRecord): PointRecord =
         pointRecordRepository.save(pointRecord)
-    }
+
+    fun readById(id: Long): PointRecord? =
+        pointRecordRepository.findByIdOrNull(id)
 
     fun readAllByUserIdAndStatusOrderByExpiresAtAsc(userId: Long, status: PointStatus): List<PointRecord> =
         pointRecordRepository.findAllByUserIdAndStatusOrderByExpiresAtAsc(userId, status)

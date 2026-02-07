@@ -1,6 +1,7 @@
 package kr.co.rouletteup.admin.point.controller
 
 import java.time.LocalDate
+import kr.co.rouletteup.admin.point.usecase.ReclaimPointRecordForAdminUseCase
 import kr.co.rouletteup.admin.point.api.AdminPointApi
 import kr.co.rouletteup.admin.point.usecase.GetPointForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/points")
 class AdminPointController(
     private val getPointForAdminUseCase: GetPointForAdminUseCase,
+    private val reclaimPointRecordForAdminUseCase: ReclaimPointRecordForAdminUseCase,
 ) : AdminPointApi {
 
     @GetMapping("/users/{userId}")
@@ -40,4 +43,12 @@ class AdminPointController(
                 getPointForAdminUseCase.getPointRecordByRouletteDate(rouletteDate, pageable)
             )
         )
+
+    @PatchMapping("/{pointId}/reclaim")
+    override fun reclaimPointRecord(
+        @PathVariable pointId: Long,
+    ): ResponseEntity<*> {
+        reclaimPointRecordForAdminUseCase.reclaim(pointId)
+        return ResponseEntity.ok(SuccessResponse.ok())
+    }
 }

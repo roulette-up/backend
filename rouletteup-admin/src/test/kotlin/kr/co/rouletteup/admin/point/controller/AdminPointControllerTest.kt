@@ -3,19 +3,21 @@ package kr.co.rouletteup.admin.point.controller
 import java.time.LocalDate
 import kr.co.rouletteup.admin.point.dto.AdminPointRes
 import kr.co.rouletteup.admin.point.usecase.GetPointForAdminUseCase
+import kr.co.rouletteup.admin.point.usecase.ReclaimPointRecordForAdminUseCase
 import kr.co.rouletteup.domain.point.type.PointStatus
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.willDoNothing
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
 @WebMvcTest(AdminPointController::class)
@@ -26,6 +28,9 @@ class AdminPointControllerTest {
 
     @MockitoBean
     private lateinit var getPointForAdminUseCase: GetPointForAdminUseCase
+
+    @MockitoBean
+    private lateinit var reclaimPointRecordForAdminUseCase: ReclaimPointRecordForAdminUseCase
 
     @Nested
     @DisplayName("유저 포인트 내역 조회 API")
@@ -113,6 +118,30 @@ class AdminPointControllerTest {
                     jsonPath("$.data.content[0].id").value(response.id)
                     jsonPath("$.data.content[0].rouletteDate").value(response.rouletteDate)
                     jsonPath("$.data.content[0].status").value(response.status)
+                }
+        }
+    }
+
+    @Nested
+    @DisplayName("포인트 회수 API")
+    inner class ReclaimPointRecord {
+
+        @Test
+        fun `성공 - 포인트 회수 요청이면 200을 반환한다`() {
+            // given
+            val pointId = 1L
+            willDoNothing().given(reclaimPointRecordForAdminUseCase).reclaim(pointId)
+
+            // when
+            val resultActions = mockMvc.patch("/api/v1/admin/points/$pointId/reclaim")
+
+            // then
+            resultActions
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    jsonPath("$.code").value(200)
+                    jsonPath("$.message").value("요청이 성공하였습니다.")
                 }
         }
     }
