@@ -22,4 +22,6 @@ class ProductService(
     fun readAll(pageable: Pageable): Page<Product> =
         productRepository.findAll(pageable)
 
+    fun decreaseStock(id: Long, amount: Int): Int =
+        productRepository.decreaseStock(id, amount)
 }

@@ -51,4 +51,11 @@ class PointRecord(
     @Column(name = "roulette_date", nullable = false)
     var rouletteDate: LocalDate = rouletteDate
         protected set
+
+    fun use(amount: Long) {
+        remainingPoint -= amount
+        if (remainingPoint == 0L) {
+            status = PointStatus.USED
+        }
+    }
 }
