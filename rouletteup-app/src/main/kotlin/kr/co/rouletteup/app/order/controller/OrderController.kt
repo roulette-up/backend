@@ -1,5 +1,6 @@
 package kr.co.rouletteup.app.order.controller
 
+import kr.co.rouletteup.app.order.api.OrderApi
 import kr.co.rouletteup.app.order.dto.OrderReq
 import kr.co.rouletteup.app.order.usecase.PurchaseProductUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/orders")
 class OrderController(
     private val purchaseProductUseCase: PurchaseProductUseCase,
-) {
+) : OrderApi {
 
     @PostMapping
-    fun purchaseProduct(
+    override fun purchaseProduct(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @RequestBody request: OrderReq,
     ): ResponseEntity<*> {
