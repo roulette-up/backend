@@ -72,10 +72,9 @@ class PointRecord(
     }
 
     /**
-     * 어드민에 의한 환불 처리
-     * - 사용자 자발적 취소가 아니기에 유효기간 연장
+     * 어드민에 의한 환불 처리 및 부채 삭감 포인트 환급
      */
-    fun refundByAdmin(amount: Long) {
+    fun restore(amount: Long) {
         this.remainingPoint += amount
 
         this.expiresAt =
@@ -88,5 +87,13 @@ class PointRecord(
             }
 
         this.status = PointStatus.AVAILABLE
+    }
+
+    /**
+     * 포인트 회수 처리 편의 메서드
+     */
+    fun markAsCanceled() {
+        this.remainingPoint = 0L
+        this.status = PointStatus.CANCELED
     }
 }

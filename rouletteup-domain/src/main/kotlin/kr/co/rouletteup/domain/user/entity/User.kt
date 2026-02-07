@@ -44,4 +44,12 @@ class User(
         pointDebt -= repaid
         return repaid
     }
+
+    /**
+     * 부채 추가 편의 메서드
+     */
+    fun increaseDebt(amount: Long) {
+        this.pointDebt += amount
+    }
+
 }
