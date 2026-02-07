@@ -10,29 +10,39 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/admin/orders")
+@RequestMapping("/api/v1/admin")
 class AdminOrderController(
     private val getOrderForAdminUseCase: GetOrderForAdminUseCase,
 ) : AdminOrderApi {
 
-    @GetMapping
-    override fun getOrders(
-        @RequestParam(required = false) userId: Long?,
+    @GetMapping("/users/{userId}/orders")
+    override fun getOrdersByUserId(
+        @PathVariable userId: Long,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
-                getOrderForAdminUseCase.getOrders(userId, pageable)
+                getOrderForAdminUseCase.getOrdersByUserId(userId, pageable)
             )
         )
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/products/{productId}/orders")
+    override fun getOrdersByProductId(
+        @PathVariable productId: Long,
+        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
+    ): ResponseEntity<*> =
+        ResponseEntity.ok(
+            SuccessResponse.from(
+                getOrderForAdminUseCase.getOrdersByProductId(productId, pageable)
+            )
+        )
+
+    @GetMapping("/orders/{orderId}")
     override fun getOrderById(
-        @PathVariable orderId: Long
+        @PathVariable orderId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
