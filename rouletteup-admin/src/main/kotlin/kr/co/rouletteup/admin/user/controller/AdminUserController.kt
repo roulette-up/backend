@@ -1,5 +1,6 @@
 package kr.co.rouletteup.admin.user.controller
 
+import kr.co.rouletteup.admin.user.api.AdminUserApi
 import kr.co.rouletteup.admin.user.usecase.GetUserForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/users")
 class AdminUserController(
     private val getUserForAdminUseCase: GetUserForAdminUseCase,
-) {
+) : AdminUserApi {
 
     @GetMapping
-    fun getUsers(
+    override fun getUsers(
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
@@ -28,8 +29,8 @@ class AdminUserController(
         )
 
     @GetMapping("/{userId}")
-    fun getUserById(
-        @PathVariable userId: Long
+    override fun getUserById(
+        @PathVariable userId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(

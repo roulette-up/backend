@@ -1,6 +1,7 @@
 package kr.co.rouletteup.admin.point.controller
 
 import java.time.LocalDate
+import kr.co.rouletteup.admin.point.api.AdminPointApi
 import kr.co.rouletteup.admin.point.usecase.GetPointForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/points")
 class AdminPointController(
     private val getPointForAdminUseCase: GetPointForAdminUseCase,
-) {
+) : AdminPointApi {
 
     @GetMapping("/users/{userId}")
-    fun getPointRecordByUserId(
+    override fun getPointRecordByUserId(
         @PathVariable userId: Long,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
@@ -30,7 +31,7 @@ class AdminPointController(
         )
 
     @GetMapping("/roulettes/{rouletteDate}")
-    fun getPointRecordByRouletteDate(
+    override fun getPointRecordByRouletteDate(
         @PathVariable rouletteDate: LocalDate,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =

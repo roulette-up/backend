@@ -1,5 +1,6 @@
 package kr.co.rouletteup.admin.order.controller
 
+import kr.co.rouletteup.admin.order.api.AdminOrderApi
 import kr.co.rouletteup.admin.order.usecase.GetOrderForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/orders")
 class AdminOrderController(
     private val getOrderForAdminUseCase: GetOrderForAdminUseCase,
-) {
+) : AdminOrderApi {
 
     @GetMapping
-    fun getOrders(
+    override fun getOrders(
         @RequestParam(required = false) userId: Long?,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
@@ -30,7 +31,7 @@ class AdminOrderController(
         )
 
     @GetMapping("/{orderId}")
-    fun getOrderById(
+    override fun getOrderById(
         @PathVariable orderId: Long
     ): ResponseEntity<*> =
         ResponseEntity.ok(
