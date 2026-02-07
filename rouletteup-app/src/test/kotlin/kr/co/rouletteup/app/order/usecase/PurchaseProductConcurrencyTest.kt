@@ -1,6 +1,7 @@
 package kr.co.rouletteup.app.order.usecase
 
 import java.time.LocalDate
+import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -18,6 +19,7 @@ import kr.co.rouletteup.domain.user.entity.User
 import kr.co.rouletteup.domain.user.repository.UserRepository
 import kr.co.rouletteup.domain.user.type.Role
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
@@ -44,6 +46,15 @@ class PurchaseProductConcurrencyTest {
     @Autowired
     private lateinit var purchaseProductUseCase: PurchaseProductUseCase
 
+    @BeforeEach
+    fun setUp() {
+        orderRepository.deleteAll()
+        productRepository.deleteAll()
+        pointRepository.deleteAll()
+        orderPointUsageRepository.deleteAll()
+        userRepository.deleteAll()
+    }
+
     @Test
     fun `100명이 동시에 1개씩 구매하면 재고 100개가 정확히 소진되고 주문 100건이 생성된다`() {
         // given
@@ -61,11 +72,14 @@ class PurchaseProductConcurrencyTest {
             )
         )
 
+
         // 사용자 생성
         val users = (1..threadCount).map { idx ->
+            val runId = UUID.randomUUID().toString().substring(0, 8)
+            val nickname = "u$idx-$runId"
             userRepository.save(
                 User(
-                    nickname = "user-$idx",
+                    nickname = nickname,
                     role = Role.USER
                 )
             )

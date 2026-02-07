@@ -22,7 +22,7 @@ import org.springframework.transaction.support.TransactionTemplate
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ParticipateRouletteConcurrencyTest{
+class ParticipateRouletteConcurrencyTest {
 
     @Autowired
     lateinit var participateRouletteUseCase: ParticipateRouletteUseCase
@@ -46,6 +46,9 @@ class ParticipateRouletteConcurrencyTest{
 
     @BeforeEach
     fun setup() {
+        userRepository.deleteAll()
+        pointRecordRepository.deleteAll()
+
         // 유저 100명 생성
         txTemplate.executeWithoutResult {
             val users = (1L..100L).map { id ->
@@ -86,11 +89,12 @@ class ParticipateRouletteConcurrencyTest{
         // 동시에 시작
         startLatch.countDown()
 
-        // 모두 종료 대기
         val finished = doneLatch.await(30, TimeUnit.SECONDS)
-        pool.shutdown()
 
-        if (!finished) {
+        pool.shutdown()
+        val terminated = pool.awaitTermination(30, TimeUnit.SECONDS)
+
+        if (!finished || !terminated) {
             throw IllegalStateException("동시성 테스트가 시간 내에 종료되지 않았습니다.")
         }
 
