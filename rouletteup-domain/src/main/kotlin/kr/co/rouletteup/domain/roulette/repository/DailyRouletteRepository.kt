@@ -2,6 +2,8 @@ package kr.co.rouletteup.domain.roulette.repository
 
 import java.time.LocalDate
 import kr.co.rouletteup.domain.roulette.entity.DailyRoulette
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -25,4 +27,17 @@ interface DailyRouletteRepository : JpaRepository<DailyRoulette, Long> {
         @Param("date") date: LocalDate,
         @Param("budget") budget: Long,
     ): Int
+
+    @Query(
+        value = """
+            SELECT *
+            FROM daily_roulette
+            ORDER BY id DESC
+        """,
+        countQuery = """
+            SELECT COUNT(*)
+            FROM daily_roulette
+        """, nativeQuery = true
+    )
+    fun findAllIncludeDeleted(pageable: Pageable): Page<DailyRoulette>
 }
