@@ -9,6 +9,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlin.test.Test
+import kr.co.rouletteup.app.order.service.CanceledPointRefundService
 import kr.co.rouletteup.domain.order.entity.Order
 import kr.co.rouletteup.domain.order.entity.OrderPointUsage
 import kr.co.rouletteup.domain.order.exception.OrderErrorType
@@ -40,6 +41,9 @@ class CancelOrderUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
+
+    @MockK
+    private lateinit var canceledPointRefundService: CanceledPointRefundService
 
     @InjectMockKs
     private lateinit var cancelOrderUseCase: CancelOrderUseCase
