@@ -67,4 +67,12 @@ class Order(
     fun cancelByUser() {
         this.status = OrderStatus.USER_CANCELLED
     }
+
+    /**
+     * 어드민에 의한 취소
+     */
+    fun cancelByAdmin() {
+        this.status = OrderStatus.ADMIN_CANCELLED
+    }
+
 }
