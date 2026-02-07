@@ -37,7 +37,7 @@ class OrderController(
     }
 
     @GetMapping("/my")
-    fun getOrders(
+    override fun getOrders(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*> =
@@ -48,7 +48,7 @@ class OrderController(
         )
 
     @GetMapping("/{orderId}")
-    fun getOrderById(
+    override fun getOrderById(
         @PathVariable orderId: Long,
     ): ResponseEntity<*> =
         ResponseEntity.ok(
@@ -58,7 +58,7 @@ class OrderController(
         )
 
     @PatchMapping("/{orderId}")
-    fun cancelOrder(
+    override fun cancelOrder(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @PathVariable orderId: Long,
     ): ResponseEntity<*> {
