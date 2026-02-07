@@ -16,23 +16,28 @@ class GetOrderForAdminUseCase(
 ) {
 
     /**
-     * 전체 주문 내역 조회 메서드 (soft delete 포함)
-     * - userId 존재 o -> 사용자를 통한 조회
-     * - userId 존재 x -> 전체 조회
+     * 사용자별 주문 내역 조회 메서드 (soft delete 포함)
      *
+     * @param userId 사용자 ID(PK)
      * @param pageable 페이지 크기
      * @return 주문 내역 페이징 DTO
      */
     @Transactional(readOnly = true)
-    fun getOrders(userId: Long?, pageable: Pageable): Page<AdminOrderSummary> {
-        return if (userId != null) {
-            orderService.readAllByUserIdIncludeDeleted(userId, pageable)
-                .map { order -> AdminOrderSummary.from(order) }
-        } else {
-            orderService.readAllIncludeDeleted(pageable)
-                .map { order -> AdminOrderSummary.from(order) }
-        }
-    }
+    fun getOrdersByUserId(userId: Long, pageable: Pageable): Page<AdminOrderSummary> =
+        orderService.readAllByUserIdIncludeDeleted(userId, pageable)
+            .map { order -> AdminOrderSummary.from(order) }
+
+    /**
+     * 상품별 주문 내역 조회 메서드 (soft delete 포함)
+     *
+     * @param productId 상품 ID(PK)
+     * @param pageable 페이지 크기
+     * @return 주문 내역 페이징 DTO
+     */
+    @Transactional(readOnly = true)
+    fun getOrdersByProductId(productId: Long, pageable: Pageable): Page<AdminOrderSummary> =
+        orderService.readAllByProductIdIncludeDeleted(productId, pageable)
+            .map { order -> AdminOrderSummary.from(order) }
 
     /**
      * 특정 주문 내역 조회 메서드 (soft delete 포함)

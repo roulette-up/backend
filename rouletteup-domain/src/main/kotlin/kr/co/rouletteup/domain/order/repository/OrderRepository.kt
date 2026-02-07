@@ -32,14 +32,19 @@ interface OrderRepository : JpaRepository<Order, Long> {
         value = """
             SELECT *
             FROM orders
+            WHERE product_id = :productId
             ORDER BY id DESC
         """,
         countQuery = """
             SELECT COUNT(*)
             FROM orders
+            WHERE product_id = :productId
         """, nativeQuery = true
     )
-    fun findAllIncludeDeleted(pageable: Pageable): Page<Order>
+    fun findAllByProductIdIdIncludeDeleted(
+        @Param("productId") productId: Long,
+        pageable: Pageable
+    ): Page<Order>
 
     @Query(
         value = """

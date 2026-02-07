@@ -27,6 +27,6 @@ class OrderService(
     fun readAllByUserIdIncludeDeleted(userId: Long, pageable: Pageable): Page<Order> =
         orderRepository.findAllByUserIdIdIncludeDeleted(userId, pageable)
 
-    fun readAllIncludeDeleted(pageable: Pageable): Page<Order> =
-        orderRepository.findAllIncludeDeleted(pageable)
+    fun readAllByProductIdIncludeDeleted(productId: Long, pageable: Pageable): Page<Order> =
+        orderRepository.findAllByProductIdIdIncludeDeleted(productId, pageable)
 }
