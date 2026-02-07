@@ -66,7 +66,44 @@ class AdminRouletteControllerTest {
                     jsonPath("$.data.content[0].totalBudget").value(response.totalBudget)
                     jsonPath("$.data.content[0].usedBudget").value(response.usedBudget)
                 }
+        }
+    }
 
+    @Nested
+    @DisplayName("오늘 룰렛 조회 API")
+    inner class GetTodayRoulette {
+
+        @Test
+        fun `오늘 룰렛 정보를 조회한다`() {
+            // given
+            val response = AdminRouletteRes(
+                id = 1L,
+                rouletteDate = LocalDate.of(2026, 2, 7),
+                totalBudget = 100_000L,
+                usedBudget = 30_000L,
+                participantCount = 50,
+                deletedAt = null
+            )
+
+            given(getRouletteForAdminUseCase.getTodayRoulette())
+                .willReturn(response)
+
+            // when
+            val resultActions = mockMvc.get("/api/v1/admin/roulettes/today")
+
+            // then
+            resultActions
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    jsonPath("$.code").value(200)
+                    jsonPath("$.message").value("요청이 성공하였습니다.")
+                    jsonPath("$.data.id").value(response.id)
+                    jsonPath("$.data.rouletteDate").value(response.rouletteDate)
+                    jsonPath("$.data.totalBudget").value(response.totalBudget)
+                    jsonPath("$.data.usedBudget").value(response.usedBudget)
+                    jsonPath("$.data.participantCount").value(response.participantCount)
+                }
         }
     }
 }
