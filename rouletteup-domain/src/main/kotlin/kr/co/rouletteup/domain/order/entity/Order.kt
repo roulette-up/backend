@@ -22,6 +22,7 @@ import org.hibernate.annotations.SQLRestriction
 class Order(
     quantity: Int,
     productPrice: Long,
+    productName: String,
     status: OrderStatus,
     user: User,
     product: Product,
@@ -33,6 +34,10 @@ class Order(
 
     @Column(name = "product_price", nullable = false)
     var productPrice: Long = productPrice
+        protected set
+
+    @Column(name = "product_name", nullable = false)
+    var productName: String = productName
         protected set
 
     @Enumerated(EnumType.STRING)
