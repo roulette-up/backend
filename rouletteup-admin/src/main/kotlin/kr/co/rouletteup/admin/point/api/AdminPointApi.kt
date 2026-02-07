@@ -148,4 +148,91 @@ interface AdminPointApi {
         )
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*>
+
+    @Operation(summary = "포인트 회수", description = "포인트 회수하는 API")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "포인트 회수 성공",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "포인트 회수 성공",
+                                value = """
+                            {
+                                "code": 200,
+                                "message": "요청이 성공하였습니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "실패 - 이미 회수된 포인트",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "이미 회수된 포인트",
+                                value = """
+                            {
+                                "code": "P003",
+                                "message": "이미 회수된 포인트입니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "존재하지 않는 경우",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "룰렛 존재하지 않음",
+                                value = """
+                            {
+                                "code": "R001",
+                                "message": "룰렛이 존재하지 않습니다."
+                            }
+                            """
+                            ),
+                            ExampleObject(
+                                name = "포인트 내역 존재하지 않음",
+                                value = """
+                            {
+                                "code": "P002",
+                                "message": "포인트 기록이 존재하지 않습니다."
+                            }
+                            """
+                            ),
+                            ExampleObject(
+                                name = "(부채 처리 과정) 사용자 존재하지 않음",
+                                value = """
+                            {
+                                "code": "U001",
+                                "message": "사용자가 존재하지 않습니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
+    )
+    fun reclaimPointRecord(
+        @PathVariable pointId: Long,
+    ): ResponseEntity<*>
 }

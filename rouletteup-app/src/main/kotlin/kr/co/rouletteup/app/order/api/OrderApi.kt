@@ -287,7 +287,7 @@ interface OrderApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "실패 - 주문 내역 존재하지 않음",
+                description = "존재하지 않는 경우",
                 content = [
                     Content(
                         mediaType = "application/json",
@@ -298,6 +298,24 @@ interface OrderApi {
                             {
                                 "code": "OR003",
                                 "message": "주문이 존재하지 않습니다."
+                            }
+                            """
+                            ),
+                            ExampleObject(
+                                name = "(부채 처리 과정) 사용자 존재하지 않음",
+                                value = """
+                            {
+                                "code": "U001",
+                                "message": "사용자가 존재하지 않습니다."
+                            }
+                            """
+                            ),
+                            ExampleObject(
+                                name = "(부채 처리 과정) 포인트 내역 존재하지 않음",
+                                value = """
+                            {
+                                "code": "P002",
+                                "message": "포인트 기록이 존재하지 않습니다."
                             }
                             """
                             )

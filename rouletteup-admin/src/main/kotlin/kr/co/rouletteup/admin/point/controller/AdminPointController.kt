@@ -45,7 +45,7 @@ class AdminPointController(
         )
 
     @PatchMapping("/{pointId}/reclaim")
-    fun reclaimPointRecord(
+    override fun reclaimPointRecord(
         @PathVariable pointId: Long,
     ): ResponseEntity<*> {
         reclaimPointRecordForAdminUseCase.reclaim(pointId)
