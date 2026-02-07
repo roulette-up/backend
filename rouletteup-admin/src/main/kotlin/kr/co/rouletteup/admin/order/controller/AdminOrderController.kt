@@ -54,7 +54,7 @@ class AdminOrderController(
         )
 
     @PatchMapping("/orders/{orderId}/cancel")
-    fun cancelUserOrder(
+    override fun cancelUserOrder(
         @PathVariable orderId: Long,
     ): ResponseEntity<*> {
         cancelUserOrderForAdminUseCase.cancelUserOrder(orderId)
