@@ -29,48 +29,8 @@ class AdminOrderControllerTest {
     private lateinit var getOrderForAdminUseCase: GetOrderForAdminUseCase
 
     @Nested
-    @DisplayName("전체 주문 조회 API")
-    inner class GetOrders {
-
-        @Test
-        fun `userId 없이 전체 주문을 페이징 조회한다`() {
-            // given
-            val pageable = PageRequest.of(0, 20)
-
-            val response = AdminOrderSummary(
-                id = 1L,
-                quantity = 2,
-                productPrice = 100,
-                productName = "상품1",
-                status = OrderStatus.COMPLETED,
-                productId = 10L,
-                userId = 1L,
-                deletedAt = null
-            )
-
-            val page = PageImpl(listOf(response), pageable, 1)
-
-            given(getOrderForAdminUseCase.getOrders(null, pageable))
-                .willReturn(page)
-
-            // when
-            val resultActions = mockMvc.get("/api/v1/admin/orders") {
-                param("page", "0")
-                param("size", "20")
-            }
-
-            // then
-            resultActions
-                .andDo { print() }
-                .andExpect {
-                    status { isOk() }
-                    jsonPath("$.code").value(200)
-                    jsonPath("$.message").value("요청이 성공하였습니다.")
-                    jsonPath("$.data.content[0].id").value(response.id)
-                    jsonPath("$.data.content[0].productName").value(response.productName)
-                    jsonPath("$.data.content[0].status").value(response.status)
-                }
-        }
+    @DisplayName("사용자별 주문 내역 조회 API")
+    inner class GetOrdersByUserId {
 
         @Test
         fun `userId로 특정 사용자 주문만 조회한다`() {
@@ -91,12 +51,53 @@ class AdminOrderControllerTest {
 
             val page = PageImpl(listOf(response), pageable, 1)
 
-            given(getOrderForAdminUseCase.getOrders(userId, pageable))
+            given(getOrderForAdminUseCase.getOrdersByUserId(userId, pageable))
                 .willReturn(page)
 
             // when
-            val resultActions = mockMvc.get("/api/v1/admin/orders") {
-                param("userId", userId.toString())
+            val resultActions = mockMvc.get("/api/v1/admin/users/$userId/orders") {
+                param("page", "0")
+                param("size", "20")
+            }
+
+            // then
+            resultActions
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    jsonPath("$.data.content[0].id").value(response.id)
+                    jsonPath("$.data.content[0].status").value(response.status)
+                }
+        }
+    }
+
+    @Nested
+    @DisplayName("상품별 주문 내역 조회 API")
+    inner class GetOrders {
+        @Test
+        fun `productId로 특정 상품 주문만 조회한다`() {
+            // given
+            val productId = 5L
+            val pageable = PageRequest.of(0, 20)
+
+            val response = AdminOrderSummary(
+                id = 1L,
+                quantity = 2,
+                productPrice = 100,
+                productName = "상품1",
+                status = OrderStatus.COMPLETED,
+                productId = 10L,
+                userId = 1L,
+                deletedAt = null
+            )
+
+            val page = PageImpl(listOf(response), pageable, 1)
+
+            given(getOrderForAdminUseCase.getOrdersByProductId(productId, pageable))
+                .willReturn(page)
+
+            // when
+            val resultActions = mockMvc.get("/api/v1/admin/products/$productId/orders") {
                 param("page", "0")
                 param("size", "20")
             }
