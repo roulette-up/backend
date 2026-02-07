@@ -12,4 +12,7 @@ class OrderPointUsageService(
     fun saveAll(usages: List<OrderPointUsage>) {
         orderPointUsageRepository.saveAllInBatch(usages)
     }
+
+    fun readByOrderId(orderId: Long): List<OrderPointUsage> =
+        orderPointUsageRepository.findByOrderId(orderId)
 }
