@@ -54,4 +54,17 @@ class Order(
     @JoinColumn(name = "product_id", nullable = false)
     var product: Product = product
         protected set
+
+    /**
+     * 권한 확인
+     */
+    fun isOwner(userId: Long): Boolean =
+        userId == user.id
+
+    /**
+     * 사용자에 의한 취소
+     */
+    fun cancelByUser() {
+        this.status = OrderStatus.USER_CANCELLED
+    }
 }
