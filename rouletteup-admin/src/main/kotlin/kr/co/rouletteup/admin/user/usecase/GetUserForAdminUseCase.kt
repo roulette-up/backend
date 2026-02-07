@@ -1,0 +1,43 @@
+package kr.co.rouletteup.admin.user.usecase
+
+import kr.co.rouletteup.admin.user.dto.AdminUserDetail
+import kr.co.rouletteup.admin.user.dto.AdminUserSummary
+import kr.co.rouletteup.domain.user.exception.UserErrorType
+import kr.co.rouletteup.domain.user.exception.UserException
+import kr.co.rouletteup.domain.user.service.UserService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+@Service
+class GetUserForAdminUseCase(
+    private val userService: UserService,
+) {
+
+    /**
+     * 전체 사용자 조회 메서드 (soft delete 포함)
+     *
+     * @param pageable 페이지 크기
+     * @return 사용자 페이징 DTO
+     */
+    @Transactional(readOnly = true)
+    fun getUsers(pageable: Pageable): Page<AdminUserSummary> =
+        userService.readAllIncludingDeleted(pageable)
+            .map { user -> AdminUserSummary.from(user) }
+
+    /**
+     * 특정 사용자 조회 메서드 (soft delete 포함)
+     *
+     * @param userId 사용자 ID(PK)
+     * @return 사용자 정보 DTO
+     */
+    @Transactional(readOnly = true)
+    fun getUserById(userId: Long): AdminUserDetail {
+        val user = userService.readByIdIncludeDeleted(userId)
+            ?: throw UserException(UserErrorType.NOT_FOUND)
+
+        return AdminUserDetail.from(user)
+    }
+
+}

@@ -2,6 +2,8 @@ package kr.co.rouletteup.domain.user.service
 
 import kr.co.rouletteup.domain.user.entity.User
 import kr.co.rouletteup.domain.user.repository.UserRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -18,5 +20,11 @@ class UserService(
 
     fun readByNickname(nickname: String): User? =
         userRepository.findByNickname(nickname)
+
+    fun readByIdIncludeDeleted(id: Long): User? =
+        userRepository.findByIdIncludeDeleted(id)
+
+    fun readAllIncludingDeleted(pageable: Pageable): Page<User> =
+        userRepository.findAllIncludeDeleted(pageable)
 
 }
