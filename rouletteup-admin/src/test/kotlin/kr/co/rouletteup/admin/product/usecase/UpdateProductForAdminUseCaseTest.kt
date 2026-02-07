@@ -20,13 +20,13 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class UpdateProductUseCaseTest {
+class UpdateProductForAdminUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
 
     @InjectMockKs
-    private lateinit var updateProductUseCase: UpdateProductUseCase
+    private lateinit var updateProductForAdminUseCase: UpdateProductForAdminUseCase
 
     @Nested
     @DisplayName("상품 정보 업데이트")
@@ -42,7 +42,7 @@ class UpdateProductUseCaseTest {
             every { productService.readById(productId) } returns product
 
             // when
-            updateProductUseCase.updateProductInfo(productId, request)
+            updateProductForAdminUseCase.updateProductInfo(productId, request)
 
             // then
             verify(exactly = 1) { productService.readById(productId) }
@@ -59,7 +59,7 @@ class UpdateProductUseCaseTest {
 
             // when
             val exception = assertThrows<ProductException> {
-                updateProductUseCase.updateProductInfo(productId, request)
+                updateProductForAdminUseCase.updateProductInfo(productId, request)
             }
 
             // then
@@ -85,7 +85,7 @@ class UpdateProductUseCaseTest {
             every { productService.readById(productId) } returns product
 
             // when
-            updateProductUseCase.updateProductStock(productId, request)
+            updateProductForAdminUseCase.updateProductStock(productId, request)
 
             // then
             verify(exactly = 1) { productService.readById(productId) }
@@ -102,7 +102,7 @@ class UpdateProductUseCaseTest {
 
             // when
             val exception = assertThrows<ProductException> {
-                updateProductUseCase.updateProductStock(productId, request)
+                updateProductForAdminUseCase.updateProductStock(productId, request)
             }
 
             // then
@@ -129,7 +129,7 @@ class UpdateProductUseCaseTest {
 
             // when
             val exception = assertThrows<ProductException> {
-                updateProductUseCase.updateProductStock(productId, request)
+                updateProductForAdminUseCase.updateProductStock(productId, request)
             }
 
             // then

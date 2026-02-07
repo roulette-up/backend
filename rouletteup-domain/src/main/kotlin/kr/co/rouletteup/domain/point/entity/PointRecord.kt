@@ -70,4 +70,23 @@ class PointRecord(
             this.status = PointStatus.AVAILABLE
         }
     }
+
+    /**
+     * 어드민에 의한 환불 처리
+     * - 사용자 자발적 취소가 아니기에 유효기간 연장
+     */
+    fun refundByAdmin(amount: Long) {
+        this.remainingPoint += amount
+
+        this.expiresAt =
+            if (this.status == PointStatus.EXPIRED) {
+                // 이미 만료된 경우, 오늘 기준 +3일
+                LocalDate.now().plusDays(3)
+            } else {
+                // 아직 유효한 경우, 기존 만료일 +3일
+                this.expiresAt.plusDays(3)
+            }
+
+        this.status = PointStatus.AVAILABLE
+    }
 }

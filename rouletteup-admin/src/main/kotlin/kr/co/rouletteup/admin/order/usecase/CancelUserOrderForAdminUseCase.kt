@@ -1,4 +1,4 @@
-package kr.co.rouletteup.app.order.usecase
+package kr.co.rouletteup.admin.order.usecase
 
 import kr.co.rouletteup.domain.order.entity.OrderPointUsage
 import kr.co.rouletteup.domain.order.exception.OrderErrorType
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CancelOrderUseCase(
+class CancelUserOrderForAdminUseCase(
     private val orderService: OrderService,
     private val orderPointUsageService: OrderPointUsageService,
     private val pointRecordService: PointRecordService,
@@ -23,31 +23,23 @@ class CancelOrderUseCase(
 ) {
 
     /**
-     * 상품 주문 취소 처리 메서드
-     * - 사용자 권한 확인 후, 주문 상태 사용자 취소로 변경
-     * - 해당 주문에 사용한 point usage 조회
-     * - 사용한 포인트 환불 처리
+     * 어드민이 사용자 주문 내역을 취소하는 메서드
+     * - 주문에 사용된 사용자 포인트 내역을 조회하여 환불 진행
+     * - 만료 기한을 +3일 처리 (이미 만료된 경우, 현재 날짜 기준)
      * - 상품 재고 업데이트
-     *
-     * @param userId 사용자 ID(PK)
-     * @param orderId 상품 주문 ID(PK)
      */
     @Transactional
-    fun cancelOrder(userId: Long, orderId: Long) {
+    fun cancelUserOrder(orderId: Long) {
         val order = orderService.readById(orderId)
             ?: throw OrderException(OrderErrorType.NOT_FOUND)
 
-        if (!order.isOwner(userId)) {
-            throw OrderException(OrderErrorType.NO_PERMISSION)
-        }
-
+        // 이미 취소 처리된 경우 예외 처리
         if (order.status != OrderStatus.COMPLETED) {
             throw OrderException(OrderErrorType.ALREADY_CANCELLED)
         }
 
-        order.cancelByUser()
+        order.cancelByAdmin()
 
-        // 해당 주문에 사용된 포인트 내역 조회 후 환불 처리
         val usages = orderPointUsageService.readByOrderId(orderId)
         refundUsedPoints(usages)
 
@@ -90,7 +82,7 @@ class CancelOrderUseCase(
             val pointRecord = pointRecordById[pointRecordId]
                 ?: throw PointException(PointErrorType.NOT_FOUND)
 
-            pointRecord.refundByUser(usage.usedAmount)
+            pointRecord.refundByAdmin(usage.usedAmount)
         }
     }
 }

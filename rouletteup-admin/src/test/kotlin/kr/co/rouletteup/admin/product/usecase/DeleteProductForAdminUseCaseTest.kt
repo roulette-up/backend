@@ -12,13 +12,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class DeleteProductUseCaseTest {
+class DeleteProductForAdminUseCaseTest {
 
     @MockK
     private lateinit var productService: ProductService
 
     @InjectMockKs
-    private lateinit var deleteProductUseCase: DeleteProductUseCase
+    private lateinit var deleteProductForAdminUseCase: DeleteProductForAdminUseCase
 
     @Nested
     @DisplayName("상품 삭제")
@@ -31,7 +31,7 @@ class DeleteProductUseCaseTest {
             every { productService.deleteById(productId) } returns Unit
 
             // when
-            deleteProductUseCase.deleteProduct(productId)
+            deleteProductForAdminUseCase.deleteProduct(productId)
 
             // then
             verify(exactly = 1) { productService.deleteById(productId) }

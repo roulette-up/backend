@@ -222,4 +222,73 @@ interface AdminOrderApi {
     fun getOrderById(
         @PathVariable orderId: Long,
     ): ResponseEntity<*>
+
+    @Operation(summary = "어드민 주문 취소", description = "어드민이 사용자 주문을 취소하는 API")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 취소 성공",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "주문 취소 성공",
+                                value = """
+                            {
+                                "code": 200,
+                                "message": "요청이 성공하였습니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "실패 - 취소 불가한 주문 상태",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "취소 불가한 주문 상태",
+                                value = """
+                            {
+                                "code": "OR005",
+                                "message": "이미 취소된 주문입니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "실패 - 주문 내역 존재하지 않음",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "주문 내역 존재하지 않음",
+                                value = """
+                            {
+                                "code": "OR003",
+                                "message": "주문이 존재하지 않습니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
+    )
+    fun cancelUserOrder(
+        @PathVariable orderId: Long,
+    ): ResponseEntity<*>
 }

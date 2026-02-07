@@ -162,7 +162,7 @@ class OrderControllerTest {
                 .cancelOrder(userId, orderId)
 
             // when
-            val resultActions = mockMvc.patch("/api/v1/orders/$orderId") {
+            val resultActions = mockMvc.patch("/api/v1/orders/$orderId/cancel") {
                 header("X-User-Id", userId)
             }
 

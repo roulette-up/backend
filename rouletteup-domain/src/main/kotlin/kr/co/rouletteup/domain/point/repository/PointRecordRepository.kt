@@ -15,7 +15,7 @@ interface PointRecordRepository : JpaRepository<PointRecord, Long> {
     fun existsByUserIdAndRouletteDate(userId: Long, rouletteDate: LocalDate): Boolean
     fun findAllByUserId(userId: Long, pageable: Pageable): Page<PointRecord>
     fun findAllByUserIdAndStatusOrderByExpiresAtAsc(userId: Long, status: PointStatus): List<PointRecord>
-    fun findAllByUserIdAndIdIn(userId: Long, ids: List<Long>): List<PointRecord>
+    fun findAllByIdIn(ids: List<Long>): List<PointRecord>
 
     @Query(
         value = """
