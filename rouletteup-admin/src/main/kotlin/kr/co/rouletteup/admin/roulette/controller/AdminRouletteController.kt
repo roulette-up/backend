@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/admin/roulettes")
 class AdminRouletteController(
-    private val getRouletteForAdminUseCase: GetRouletteForAdminUseCase
+    private val getRouletteForAdminUseCase: GetRouletteForAdminUseCase,
 ) : AdminRouletteApi {
 
     @GetMapping
@@ -26,4 +26,13 @@ class AdminRouletteController(
                 getRouletteForAdminUseCase.getRoulettes(pageable)
             )
         )
+
+    @GetMapping("/today")
+    override fun getTodayRoulette(): ResponseEntity<*> =
+        ResponseEntity.ok(
+            SuccessResponse.from(
+                getRouletteForAdminUseCase.getTodayRoulette()
+            )
+        )
+
 }
