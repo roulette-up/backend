@@ -22,6 +22,7 @@ import org.hibernate.annotations.SQLRestriction
 class Order(
     quantity: Int,
     productPrice: Long,
+    productName: String,
     status: OrderStatus,
     user: User,
     product: Product,
@@ -33,6 +34,10 @@ class Order(
 
     @Column(name = "product_price", nullable = false)
     var productPrice: Long = productPrice
+        protected set
+
+    @Column(name = "product_name", nullable = false)
+    var productName: String = productName
         protected set
 
     @Enumerated(EnumType.STRING)
@@ -49,4 +54,17 @@ class Order(
     @JoinColumn(name = "product_id", nullable = false)
     var product: Product = product
         protected set
+
+    /**
+     * 권한 확인
+     */
+    fun isOwner(userId: Long): Boolean =
+        userId == user.id
+
+    /**
+     * 사용자에 의한 취소
+     */
+    fun cancelByUser() {
+        this.status = OrderStatus.USER_CANCELLED
+    }
 }

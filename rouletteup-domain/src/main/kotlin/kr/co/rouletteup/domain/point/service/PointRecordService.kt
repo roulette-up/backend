@@ -26,6 +26,10 @@ class PointRecordService(
     fun readExpiringOn(expiresAt: LocalDate): List<PointRecord> =
         pointRecordRepository.findExpiringOn(expiresAt)
 
+    fun readAllByUserIdAndIds(userId: Long, ids: List<Long>): List<PointRecord> {
+        return pointRecordRepository.findAllByUserIdAndIdIn(userId, ids)
+    }
+
     fun existsByUserIdAndRouletteDate(userId: Long, rouletteDate: LocalDate): Boolean =
         pointRecordRepository.existsByUserIdAndRouletteDate(userId, rouletteDate)
 

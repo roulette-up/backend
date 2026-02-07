@@ -80,6 +80,7 @@ class PurchaseProductUseCaseTest {
             val user = mockk<User>()
             val product = mockk<Product>()
 
+            every { product.name } returns "상품1"
             every { userService.readById(userId) } returns user
             every { productService.readById(request.productId) } returns product
 

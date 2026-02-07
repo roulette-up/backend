@@ -58,4 +58,16 @@ class PointRecord(
             status = PointStatus.USED
         }
     }
+
+    /**
+     * 사용자에 의한 환불 처리
+     */
+    fun refundByUser(amount: Long) {
+        this.remainingPoint += amount
+
+        // 사용자 환불은 포인트 만료 기한이 지나면 상태 변화 x
+        if (this.status != PointStatus.EXPIRED) {
+            this.status = PointStatus.AVAILABLE
+        }
+    }
 }
