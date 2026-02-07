@@ -76,7 +76,7 @@ class CancelOrderUseCaseTest {
             every { usage.usedAmount } returns 500L
 
             every { orderPointUsageService.readByOrderId(orderId) } returns listOf(usage)
-            every { pointRecordService.readAllByUserIdAndIds(userId, listOf(100L)) } returns listOf(usedPointRecord)
+            every { pointRecordService.readAllByIds(listOf(100L)) } returns listOf(usedPointRecord)
 
             every { usedPointRecord.refundByUser(500L) } just Runs
             every { productService.increaseStock(99L, 2) } returns 1
@@ -87,7 +87,7 @@ class CancelOrderUseCaseTest {
             // then
             verify(exactly = 1) { order.cancelByUser() }
             verify(exactly = 1) { orderPointUsageService.readByOrderId(orderId) }
-            verify(exactly = 1) { pointRecordService.readAllByUserIdAndIds(userId, listOf(100L)) }
+            verify(exactly = 1) { pointRecordService.readAllByIds(listOf(100L)) }
             verify(exactly = 1) { usedPointRecord.refundByUser(500L) }
             verify(exactly = 1) { productService.increaseStock(99L, 2) }
         }
@@ -108,7 +108,7 @@ class CancelOrderUseCaseTest {
             assertEquals(OrderErrorType.NOT_FOUND, exception.errorType)
             verify(exactly = 1) { orderService.readById(orderId) }
             verify(exactly = 0) { orderPointUsageService.readByOrderId(any()) }
-            verify(exactly = 0) { pointRecordService.readAllByUserIdAndIds(any(), any()) }
+            verify(exactly = 0) { pointRecordService.readAllByIds(any()) }
             verify(exactly = 0) { productService.increaseStock(any(), any()) }
         }
 

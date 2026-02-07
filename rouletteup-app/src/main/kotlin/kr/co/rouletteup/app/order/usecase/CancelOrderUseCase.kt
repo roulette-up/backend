@@ -49,7 +49,7 @@ class CancelOrderUseCase(
 
         // 해당 주문에 사용된 포인트 내역 조회 후 환불 처리
         val usages = orderPointUsageService.readByOrderId(orderId)
-        refundUsedPoints(userId, usages)
+        refundUsedPoints(usages)
 
         // 상품 재고 되돌리기
         productService.increaseStock(order.product.id!!, order.quantity)
@@ -58,12 +58,10 @@ class CancelOrderUseCase(
     /**
      * 사용한 포인트 환불 처리 메서드
      *
-     * @param userId 사용자 ID(PK)
      * @param usages 사용한 포인트 리스트
      */
     private fun refundUsedPoints(
-        userId: Long,
-        usages: List<OrderPointUsage>
+        usages: List<OrderPointUsage>,
     ) {
         // 사용한 포인트 리스트를 통해 포인트 내역 id 추출
         val usedPointRecordIds = usages
@@ -75,7 +73,7 @@ class CancelOrderUseCase(
         }
 
         // 포인트 환불을 위해 추출한 id로 포인트 내역 조회
-        val pointRecords = pointRecordService.readAllByUserIdAndIds(userId, usedPointRecordIds)
+        val pointRecords = pointRecordService.readAllByIds(usedPointRecordIds)
 
         // Map<id, PointRecord>
         val pointRecordById: Map<Long, PointRecord> = pointRecords
