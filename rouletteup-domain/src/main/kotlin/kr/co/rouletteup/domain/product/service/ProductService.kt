@@ -24,4 +24,7 @@ class ProductService(
 
     fun decreaseStock(id: Long, amount: Int): Int =
         productRepository.decreaseStock(id, amount)
+
+    fun increaseStock(id: Long, amount: Int): Int =
+        productRepository.increaseStock(id, amount)
 }

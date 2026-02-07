@@ -21,4 +21,17 @@ interface ProductRepository : JpaRepository<Product, Long> {
         @Param("productId") productId: Long,
         @Param("amount") amount: Int,
     ): Int
+
+    @Modifying
+    @Query(
+        value = """
+        UPDATE product
+        SET stock_quantity = stock_quantity + :amount
+        WHERE id = :productId
+    """, nativeQuery = true
+    )
+    fun increaseStock(
+        @Param("productId") productId: Long,
+        @Param("amount") amount: Int,
+    ): Int
 }
