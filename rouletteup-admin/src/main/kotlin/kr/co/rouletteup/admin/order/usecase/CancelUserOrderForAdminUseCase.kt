@@ -1,5 +1,6 @@
 package kr.co.rouletteup.admin.order.usecase
 
+import kr.co.rouletteup.admin.order.service.CanceledPointRefundService
 import kr.co.rouletteup.domain.order.entity.OrderPointUsage
 import kr.co.rouletteup.domain.order.exception.OrderErrorType
 import kr.co.rouletteup.domain.order.exception.OrderException
@@ -10,6 +11,7 @@ import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.exception.PointErrorType
 import kr.co.rouletteup.domain.point.exception.PointException
 import kr.co.rouletteup.domain.point.service.PointRecordService
+import kr.co.rouletteup.domain.point.type.PointStatus
 import kr.co.rouletteup.domain.product.service.ProductService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +22,7 @@ class CancelUserOrderForAdminUseCase(
     private val orderPointUsageService: OrderPointUsageService,
     private val pointRecordService: PointRecordService,
     private val productService: ProductService,
+    private val canceledPointRefundService: CanceledPointRefundService,
 ) {
 
     /**
@@ -41,7 +44,7 @@ class CancelUserOrderForAdminUseCase(
         order.cancelByAdmin()
 
         val usages = orderPointUsageService.readByOrderId(orderId)
-        refundUsedPoints(usages)
+        refundUsedPoints(order.user.id!!, usages)
 
         // 상품 재고 되돌리기
         productService.increaseStock(order.product.id!!, order.quantity)
@@ -50,9 +53,11 @@ class CancelUserOrderForAdminUseCase(
     /**
      * 사용한 포인트 환불 처리 메서드
      *
+     * @param userId 사용자 ID(PK)
      * @param usages 사용한 포인트 리스트
      */
     private fun refundUsedPoints(
+        userId: Long,
         usages: List<OrderPointUsage>,
     ) {
         // 사용한 포인트 리스트를 통해 포인트 내역 id 추출
@@ -76,13 +81,20 @@ class CancelUserOrderForAdminUseCase(
             .toMap()
 
         // 환불 처리
-        usages.forEach { usage ->
+        for (usage in usages) {
             val pointRecordId = usage.pointRecord.id
 
             val pointRecord = pointRecordById[pointRecordId]
                 ?: throw PointException(PointErrorType.NOT_FOUND)
 
-            pointRecord.refundByAdmin(usage.usedAmount)
+            val usedAmount = usage.usedAmount
+
+            if (pointRecord.status != PointStatus.CANCELED) {
+                pointRecord.restore(usedAmount)
+                continue
+            }
+
+            canceledPointRefundService.refundCanceledPointFlow(userId, usedAmount)
         }
     }
 }
