@@ -12,22 +12,21 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
 
 @Tag(name = "[주문 내역 API (ADMIN)]", description = "관리자 주문 내역 처리 관련 API")
 interface AdminOrderApi {
 
-    @Operation(summary = "주문 내역 페이징 조회", description = "주문 내역 페이징 조회 API")
+    @Operation(summary = "사용자별 주문 내역 페이징 조회", description = "사용자별 주문 내역 페이징 조회 API")
     @ApiResponses(
         ApiResponse(
             responseCode = "200",
-            description = "주문 내역 페이징 조회 성공",
+            description = "사용자별 주문 내역 페이징 조회 성공",
             content = [
                 Content(
                     mediaType = "application/json",
                     examples = [
                         ExampleObject(
-                            name = "사용자를 통한 상품 페이징 조회 성공 (userId 파라미터 존재)",
+                            name = "사용자별 주문 내역 페이징 조회 성공",
                             value = """
                         {
                             "code": 200,
@@ -41,7 +40,7 @@ interface AdminOrderApi {
                                         "productName": "상품3",
                                         "status": "USER_CANCELLED",
                                         "userId": 1,
-                                        "productId": 1,
+                                        "productId": 9,
                                         "createdAt": "2026-02-07T14:35:00.489485",
                                         "deletedAt": null
                                     },
@@ -49,10 +48,10 @@ interface AdminOrderApi {
                                         "id": 2,
                                         "quantity": 4,
                                         "productPrice": 100,
-                                        "productName": "상품",
+                                        "productName": "상품2",
                                         "status": "COMPLETED",
                                         "userId": 1,
-                                        "productId": 1,
+                                        "productId": 6,
                                         "createdAt": "2026-02-07T10:56:26.427338",
                                         "deletedAt": null
                                     },
@@ -77,9 +76,28 @@ interface AdminOrderApi {
                             }
                         }
                         """
-                        ),
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    fun getOrdersByUserId(
+        @PathVariable userId: Long,
+        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
+    ): ResponseEntity<*>
+
+    @Operation(summary = "상품별 주문 내역 페이징 조회", description = "상품별 주문 내역 페이징 조회 API")
+    @ApiResponses(
+        ApiResponse(
+            responseCode = "200",
+            description = "상품별 주문 내역 페이징 조회 성공",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
                         ExampleObject(
-                            name = "전체 상품 페이징 조회 성공 (userId 파라미터 null)",
+                            name = "상품별 주문 내역 페이징 조회 성공",
                             value = """
                         {
                             "code": 200,
@@ -87,12 +105,12 @@ interface AdminOrderApi {
                             "data": {
                                 "content": [
                                     {
-                                        "id": 5,
+                                        "id": 6,
                                         "quantity": 4,
                                         "productPrice": 100,
                                         "productName": "상품6",
-                                        "status": "COMPLETED",
-                                        "userId": 5,
+                                        "status": "USER_CANCELLED",
+                                        "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T14:35:00.489485",
                                         "deletedAt": null
@@ -101,9 +119,9 @@ interface AdminOrderApi {
                                         "id": 4,
                                         "quantity": 4,
                                         "productPrice": 100,
-                                        "productName": "상품5",
+                                        "productName": "상품4",
                                         "status": "COMPLETED",
-                                        "userId": 2,
+                                        "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T10:56:26.427338",
                                         "deletedAt": null
@@ -135,9 +153,8 @@ interface AdminOrderApi {
             ]
         )
     )
-    fun getOrders(
-        @Parameter(name = "사용자 ID(PK)")
-        @RequestParam(required = false) userId: Long?,
+    fun getOrdersByProductId(
+        @PathVariable productId: Long,
 
         @Parameter(
             description = """
@@ -203,6 +220,6 @@ interface AdminOrderApi {
         )
     )
     fun getOrderById(
-        @PathVariable orderId: Long
+        @PathVariable orderId: Long,
     ): ResponseEntity<*>
 }
