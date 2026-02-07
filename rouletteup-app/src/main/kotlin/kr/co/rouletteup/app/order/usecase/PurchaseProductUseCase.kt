@@ -93,6 +93,7 @@ class PurchaseProductUseCase(
         val order = Order(
             quantity = quantity,
             productPrice = price,
+            productName = product.name,
             status = OrderStatus.COMPLETED,
             user = user,
             product = product
