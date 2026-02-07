@@ -57,7 +57,7 @@ class OrderController(
             )
         )
 
-    @PatchMapping("/{orderId}")
+    @PatchMapping("/{orderId}/cancel")
     override fun cancelOrder(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @PathVariable orderId: Long,
