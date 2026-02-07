@@ -26,8 +26,8 @@ class PointRecordService(
     fun readExpiringOn(expiresAt: LocalDate): List<PointRecord> =
         pointRecordRepository.findExpiringOn(expiresAt)
 
-    fun readAllByUserIdAndIds(userId: Long, ids: List<Long>): List<PointRecord> =
-        pointRecordRepository.findAllByUserIdAndIdIn(userId, ids)
+    fun readAllByIds(ids: List<Long>): List<PointRecord> =
+        pointRecordRepository.findAllByIdIn(ids)
 
     fun readAllByUserIdIdIncludeDeleted(userId: Long, pageable: Pageable): Page<PointRecord> =
         pointRecordRepository.findAllByUserIdIdIncludeDeleted(userId, pageable)
