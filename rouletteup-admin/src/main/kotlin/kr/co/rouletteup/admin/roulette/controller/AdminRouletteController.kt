@@ -42,7 +42,7 @@ class AdminRouletteController(
         )
 
     @GetMapping("/future/budget")
-    fun getFutureSettingsBudget(): ResponseEntity<*> =
+    override fun getFutureSettingsBudget(): ResponseEntity<*> =
         ResponseEntity.ok(
             SuccessResponse.from(
                 getRouletteForAdminUseCase.getFutureSettingsBudget()
@@ -50,7 +50,7 @@ class AdminRouletteController(
         )
 
     @PatchMapping("/today/budget")
-    fun updateTodayBudget(
+    override fun updateTodayBudget(
         @RequestBody @Valid request: AdminRouletteBudgetReq.UpdateToday,
     ): ResponseEntity<*> {
         updateRouletteBudgetForAdminUseCase.updateTodayBudget(request)
@@ -58,7 +58,7 @@ class AdminRouletteController(
     }
 
     @PatchMapping("/future/budget")
-    fun upsertFutureBudget(
+    override fun upsertFutureBudget(
         @RequestBody @Valid request: AdminRouletteBudgetReq.UpdateFuture,
     ): ResponseEntity<*> {
         updateRouletteBudgetForAdminUseCase.upsertFutureBudget(request)
