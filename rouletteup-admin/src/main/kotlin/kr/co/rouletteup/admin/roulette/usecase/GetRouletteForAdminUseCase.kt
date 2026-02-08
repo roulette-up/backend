@@ -1,10 +1,12 @@
 package kr.co.rouletteup.admin.roulette.usecase
 
 import java.time.LocalDate
+import kr.co.rouletteup.admin.roulette.dto.AdminRouletteBudgetRes
 import kr.co.rouletteup.admin.roulette.dto.AdminRouletteRes
 import kr.co.rouletteup.domain.roulette.exception.RouletteErrorType
 import kr.co.rouletteup.domain.roulette.exception.RouletteException
 import kr.co.rouletteup.domain.roulette.service.DailyRouletteService
+import kr.co.rouletteup.domain.roulette.service.RouletteBudgetSettingService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class GetRouletteForAdminUseCase(
     private val dailyRouletteService: DailyRouletteService,
+    private val rouletteBudgetSettingService: RouletteBudgetSettingService,
 ) {
 
     /**
@@ -40,4 +43,13 @@ class GetRouletteForAdminUseCase(
 
         return AdminRouletteRes.form(roulette)
     }
+
+    /**
+     * 금일 이후의 설정된 총 예산 조회 메서드
+     */
+    @Transactional(readOnly = true)
+    fun getFutureSettingsBudget(): List<AdminRouletteBudgetRes> =
+        rouletteBudgetSettingService.readFutureSettings(LocalDate.now())
+            .map { budget -> AdminRouletteBudgetRes.from(budget) }
+
 }
