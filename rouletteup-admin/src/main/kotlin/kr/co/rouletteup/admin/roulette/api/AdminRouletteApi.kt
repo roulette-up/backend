@@ -57,6 +57,26 @@ interface AdminRouletteApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getRoulettes(
@@ -95,6 +115,26 @@ interface AdminRouletteApi {
                             }
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )
@@ -167,6 +207,26 @@ interface AdminRouletteApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getFutureSettingsBudget(): ResponseEntity<*>
@@ -232,6 +292,26 @@ interface AdminRouletteApi {
                               "message": "금일 예산은 증가만 가능합니다."
                             }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )
@@ -324,6 +404,26 @@ interface AdminRouletteApi {
                               "message": "이후 날짜만 설정 가능합니다."
                             }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )

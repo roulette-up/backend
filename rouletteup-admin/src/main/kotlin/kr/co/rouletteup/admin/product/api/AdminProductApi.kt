@@ -42,6 +42,26 @@ interface AdminProductApi {
             ]
         ),
         ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
             responseCode = "400",
             description = "유효성 검증 실패",
             content = [
@@ -138,6 +158,26 @@ interface AdminProductApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getProducts(
@@ -176,6 +216,26 @@ interface AdminProductApi {
                             }
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )
@@ -264,6 +324,26 @@ interface AdminProductApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun updateProductInfo(
@@ -315,6 +395,26 @@ interface AdminProductApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun updateProductStock(
@@ -339,6 +439,26 @@ interface AdminProductApi {
                             "message": "요청이 성공하였습니다."
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )
