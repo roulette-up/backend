@@ -8,6 +8,8 @@ import kr.co.rouletteup.admin.roulette.dto.AdminRouletteBudgetRes
 import kr.co.rouletteup.admin.roulette.dto.AdminRouletteRes
 import kr.co.rouletteup.admin.roulette.usecase.GetRouletteForAdminUseCase
 import kr.co.rouletteup.admin.roulette.usecase.UpdateRouletteBudgetForAdminUseCase
+import kr.co.rouletteup.common.auth.AdminAuthInterceptor
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -39,6 +41,14 @@ class AdminRouletteControllerTest {
 
     @MockitoBean
     private lateinit var updateRouletteBudgetForAdminUseCase: UpdateRouletteBudgetForAdminUseCase
+
+    @MockitoBean
+    private lateinit var adminAuthInterceptor: AdminAuthInterceptor
+
+    @BeforeEach
+    fun setUp() {
+        given(adminAuthInterceptor.preHandle(any(), any(), any())).willReturn(true)
+    }
 
     @Nested
     @DisplayName("룰렛 목록 조회 API")

@@ -80,6 +80,26 @@ interface AdminOrderApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getOrdersByUserId(
@@ -151,6 +171,26 @@ interface AdminOrderApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getOrdersByProductId(
@@ -193,6 +233,26 @@ interface AdminOrderApi {
                             }
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )
@@ -259,6 +319,26 @@ interface AdminOrderApi {
                             {
                                 "code": "OR005",
                                 "message": "이미 취소된 주문입니다."
+                            }
+                            """
+                            )
+                        ]
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "실패 - 어드민이 아님",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(
+                                name = "일반 사용자는 접근하지 못함",
+                                value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
                             }
                             """
                             )

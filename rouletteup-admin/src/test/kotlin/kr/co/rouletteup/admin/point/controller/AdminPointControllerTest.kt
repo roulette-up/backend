@@ -4,12 +4,15 @@ import java.time.LocalDate
 import kr.co.rouletteup.admin.point.dto.AdminPointRes
 import kr.co.rouletteup.admin.point.usecase.GetPointForAdminUseCase
 import kr.co.rouletteup.admin.point.usecase.ReclaimPointRecordForAdminUseCase
+import kr.co.rouletteup.common.auth.AdminAuthInterceptor
 import kr.co.rouletteup.domain.point.type.PointStatus
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.willDoNothing
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.PageImpl
@@ -31,6 +34,14 @@ class AdminPointControllerTest {
 
     @MockitoBean
     private lateinit var reclaimPointRecordForAdminUseCase: ReclaimPointRecordForAdminUseCase
+
+    @MockitoBean
+    private lateinit var adminAuthInterceptor: AdminAuthInterceptor
+
+    @BeforeEach
+    fun setUp() {
+        given(adminAuthInterceptor.preHandle(any(), any(), any())).willReturn(true)
+    }
 
     @Nested
     @DisplayName("유저 포인트 내역 조회 API")

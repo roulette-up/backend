@@ -5,12 +5,15 @@ import kr.co.rouletteup.admin.order.dto.AdminOrderDetail
 import kr.co.rouletteup.admin.order.dto.AdminOrderSummary
 import kr.co.rouletteup.admin.order.usecase.CancelUserOrderForAdminUseCase
 import kr.co.rouletteup.admin.order.usecase.GetOrderForAdminUseCase
+import kr.co.rouletteup.common.auth.AdminAuthInterceptor
 import kr.co.rouletteup.domain.order.type.OrderStatus
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.willDoNothing
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.PageImpl
@@ -33,6 +36,14 @@ class AdminOrderControllerTest {
 
     @MockitoBean
     private lateinit var cancelUserOrderForAdminUseCase: CancelUserOrderForAdminUseCase
+
+    @MockitoBean
+    private lateinit var adminAuthInterceptor: AdminAuthInterceptor
+
+    @BeforeEach
+    fun setUp() {
+        given(adminAuthInterceptor.preHandle(any(), any(), any())).willReturn(true)
+    }
 
     @Nested
     @DisplayName("사용자별 주문 내역 조회 API")

@@ -62,6 +62,26 @@ interface AdminUserApi {
                     ]
                 )
             ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
     )
     fun getUsers(
@@ -100,6 +120,26 @@ interface AdminUserApi {
                             }
                         }
                         """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "실패 - 어드민이 아님",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "일반 사용자는 접근하지 못함",
+                            value = """
+                            {
+                                "code": "AD001",
+                                "message": "관리자 권한이 필요합니다."
+                            }
+                            """
                         )
                     ]
                 )

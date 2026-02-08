@@ -52,4 +52,10 @@ class User(
         this.pointDebt += amount
     }
 
+    /**
+     * 어드민 확인 편의 메서드
+     */
+    fun isAdmin(): Boolean =
+        role == Role.ADMIN
+
 }

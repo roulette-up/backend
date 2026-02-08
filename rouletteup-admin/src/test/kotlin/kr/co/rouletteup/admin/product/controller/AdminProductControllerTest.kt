@@ -9,6 +9,8 @@ import kr.co.rouletteup.admin.product.usecase.CreateProductForAdminUseCase
 import kr.co.rouletteup.admin.product.usecase.DeleteProductForAdminUseCase
 import kr.co.rouletteup.admin.product.usecase.GetProductForAdminUseCase
 import kr.co.rouletteup.admin.product.usecase.UpdateProductForAdminUseCase
+import kr.co.rouletteup.common.auth.AdminAuthInterceptor
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -49,6 +51,14 @@ class AdminProductControllerTest {
 
     @MockitoBean
     private lateinit var deleteProductForAdminUseCase: DeleteProductForAdminUseCase
+
+    @MockitoBean
+    private lateinit var adminAuthInterceptor: AdminAuthInterceptor
+
+    @BeforeEach
+    fun setUp() {
+        given(adminAuthInterceptor.preHandle(any(), any(), any())).willReturn(true)
+    }
 
     @Nested
     @DisplayName("상품 생성 API")

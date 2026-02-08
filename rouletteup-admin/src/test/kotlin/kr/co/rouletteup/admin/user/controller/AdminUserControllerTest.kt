@@ -4,11 +4,14 @@ import java.time.LocalDateTime
 import kr.co.rouletteup.admin.user.dto.AdminUserDetail
 import kr.co.rouletteup.admin.user.dto.AdminUserSummary
 import kr.co.rouletteup.admin.user.usecase.GetUserForAdminUseCase
+import kr.co.rouletteup.common.auth.AdminAuthInterceptor
 import kr.co.rouletteup.domain.user.type.Role
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.PageImpl
@@ -27,6 +30,14 @@ class AdminUserControllerTest {
 
     @MockitoBean
     private lateinit var getUserForAdminUseCase: GetUserForAdminUseCase
+
+    @MockitoBean
+    private lateinit var adminAuthInterceptor: AdminAuthInterceptor
+
+    @BeforeEach
+    fun setUp() {
+        given(adminAuthInterceptor.preHandle(any(), any(), any())).willReturn(true)
+    }
 
     @Nested
     @DisplayName("전체 사용자 조회 API")
