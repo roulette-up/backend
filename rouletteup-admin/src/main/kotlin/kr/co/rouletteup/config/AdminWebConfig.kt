@@ -13,5 +13,8 @@ class AdminWebConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(adminAuthInterceptor)
             .addPathPatterns("/api/v1/admin/**")
+            .excludePathPatterns(
+                "/api/v1/admin/auth/sign-in"
+            )
     }
 }
