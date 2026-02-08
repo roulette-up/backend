@@ -6,17 +6,28 @@ import kr.co.rouletteup.app.auth.dto.SignInReq
 import kr.co.rouletteup.app.auth.dto.SignInRes
 import kr.co.rouletteup.app.auth.usecase.SignInUseCase
 import kr.co.rouletteup.common.response.error.type.GlobalErrorType
+import kr.co.rouletteup.internal.filter.AdminInternalAuthFilter
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
-@WebMvcTest(AuthController::class)
+@WebMvcTest(
+    controllers = [AuthController::class],
+    excludeFilters = [
+        ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            classes = [AdminInternalAuthFilter::class]
+        )
+    ]
+)
 class AuthControllerTest {
 
     @Autowired

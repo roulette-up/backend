@@ -2,14 +2,18 @@ package kr.co.rouletteup.app.product.controller
 
 import java.time.LocalDateTime
 import kotlin.test.Test
+import kr.co.rouletteup.app.auth.controller.AuthController
 import kr.co.rouletteup.app.product.dto.ProductDetail
 import kr.co.rouletteup.app.product.usecase.GetProductUseCase
+import kr.co.rouletteup.internal.filter.AdminInternalAuthFilter
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.BDDMockito.given
 import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -17,7 +21,15 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
-@WebMvcTest(ProductController::class)
+@WebMvcTest(
+    controllers = [ProductController::class],
+    excludeFilters = [
+        ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            classes = [AdminInternalAuthFilter::class]
+        )
+    ]
+)
 class ProductControllerTest {
 
     @Autowired

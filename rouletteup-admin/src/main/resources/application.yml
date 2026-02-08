@@ -7,3 +7,9 @@ spring:
     group:
       local: common, domain, infrastructure
       prod: common, domain, infrastructure
+
+internal:
+  app:
+    base-url: ${BASE_URL:http://localhost:8080}
+    token: ${TOKEN:CHANGE}
+    token-header-name: ${TOKEN_HEADER:X-Internal-Token}

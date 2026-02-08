@@ -1,13 +1,18 @@
 package kr.co.rouletteup.admin.roulette.controller
 
+import jakarta.validation.Valid
 import kr.co.rouletteup.admin.roulette.api.AdminRouletteApi
+import kr.co.rouletteup.admin.roulette.dto.AdminRouletteBudgetReq
 import kr.co.rouletteup.admin.roulette.usecase.GetRouletteForAdminUseCase
+import kr.co.rouletteup.admin.roulette.usecase.UpdateRouletteBudgetForAdminUseCase
 import kr.co.rouletteup.common.response.success.SuccessResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/roulettes")
 class AdminRouletteController(
     private val getRouletteForAdminUseCase: GetRouletteForAdminUseCase,
+    private val updateRouletteBudgetForAdminUseCase: UpdateRouletteBudgetForAdminUseCase,
 ) : AdminRouletteApi {
 
     @GetMapping
@@ -34,5 +40,29 @@ class AdminRouletteController(
                 getRouletteForAdminUseCase.getTodayRoulette()
             )
         )
+
+    @GetMapping("/future/budget")
+    override fun getFutureSettingsBudget(): ResponseEntity<*> =
+        ResponseEntity.ok(
+            SuccessResponse.from(
+                getRouletteForAdminUseCase.getFutureSettingsBudget()
+            )
+        )
+
+    @PatchMapping("/today/budget")
+    override fun updateTodayBudget(
+        @RequestBody @Valid request: AdminRouletteBudgetReq.UpdateToday,
+    ): ResponseEntity<*> {
+        updateRouletteBudgetForAdminUseCase.updateTodayBudget(request)
+        return ResponseEntity.ok(SuccessResponse.ok())
+    }
+
+    @PatchMapping("/future/budget")
+    override fun upsertFutureBudget(
+        @RequestBody @Valid request: AdminRouletteBudgetReq.UpdateFuture,
+    ): ResponseEntity<*> {
+        updateRouletteBudgetForAdminUseCase.upsertFutureBudget(request)
+        return ResponseEntity.ok(SuccessResponse.ok())
+    }
 
 }

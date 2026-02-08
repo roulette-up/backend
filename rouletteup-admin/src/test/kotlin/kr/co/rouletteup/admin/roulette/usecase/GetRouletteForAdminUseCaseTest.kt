@@ -12,9 +12,11 @@ import java.time.LocalDate
 import kotlin.test.assertEquals
 import kr.co.rouletteup.admin.roulette.dto.AdminRouletteRes
 import kr.co.rouletteup.domain.roulette.entity.DailyRoulette
+import kr.co.rouletteup.domain.roulette.entity.RouletteBudgetSetting
 import kr.co.rouletteup.domain.roulette.exception.RouletteErrorType
 import kr.co.rouletteup.domain.roulette.exception.RouletteException
 import kr.co.rouletteup.domain.roulette.service.DailyRouletteService
+import kr.co.rouletteup.domain.roulette.service.RouletteBudgetSettingService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -32,6 +34,9 @@ class GetRouletteForAdminUseCaseTest {
 
     @MockK
     private lateinit var dailyRouletteService: DailyRouletteService
+
+    @MockK
+    private lateinit var rouletteBudgetSettingService: RouletteBudgetSettingService
 
     @InjectMockKs
     private lateinit var getRouletteForAdminUseCase: GetRouletteForAdminUseCase
@@ -121,6 +126,58 @@ class GetRouletteForAdminUseCaseTest {
 
             verify(exactly = 1) { dailyRouletteService.readByRouletteDate(today) }
             verify(exactly = 0) { AdminRouletteRes.form(any()) }
+        }
+    }
+
+    @Nested
+    @DisplayName("금일 이후 설정된 총 예산 조회")
+    inner class GetFutureSettingsBudget {
+
+        @Test
+        fun `미래 설정 예산을 조회하고 AdminRouletteBudgetRes로 변환한다`() {
+            // given
+            val today = LocalDate.now()
+
+            val setting1 = mockk<RouletteBudgetSetting>(relaxed = true) {
+                every { id } returns 1L
+                every { settingDate } returns today.plusDays(1)
+                every { totalBudget } returns 120_000L
+            }
+            val setting2 = mockk<RouletteBudgetSetting>(relaxed = true) {
+                every { id } returns 2L
+                every { settingDate } returns today.plusDays(2)
+                every { totalBudget } returns 100_000L
+            }
+
+            every { rouletteBudgetSettingService.readFutureSettings(today) } returns listOf(setting1, setting2)
+
+            // when
+            val result = getRouletteForAdminUseCase.getFutureSettingsBudget()
+
+            // then
+            verify(exactly = 1) { rouletteBudgetSettingService.readFutureSettings(today) }
+            verify(exactly = 0) { dailyRouletteService.readAllIncludeDeleted(any()) }
+            verify(exactly = 0) { dailyRouletteService.readByRouletteDate(any()) }
+
+            assertEquals(2, result.size)
+            assertEquals(setting1.settingDate, result[0].settingDate)
+            assertEquals(setting1.totalBudget, result[0].totalBudget)
+            assertEquals(setting2.settingDate, result[1].settingDate)
+            assertEquals(setting2.totalBudget, result[1].totalBudget)
+        }
+
+        @Test
+        fun `미래 설정 예산이 없으면 빈 리스트를 반환한다`() {
+            // given
+            val today = LocalDate.now()
+            every { rouletteBudgetSettingService.readFutureSettings(today) } returns emptyList()
+
+            // when
+            val result = getRouletteForAdminUseCase.getFutureSettingsBudget()
+
+            // then
+            verify(exactly = 1) { rouletteBudgetSettingService.readFutureSettings(today) }
+            assertEquals(0, result.size)
         }
     }
 }

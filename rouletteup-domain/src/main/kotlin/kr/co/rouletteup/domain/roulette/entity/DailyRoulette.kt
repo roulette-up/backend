@@ -50,4 +50,12 @@ class DailyRoulette(
             usedBudget = 0
         }
     }
+
+    /**
+     * 총 예산 변경 편의 메서드
+     */
+    fun updateTotalBudget(totalBudget: Long) {
+        this.totalBudget = totalBudget
+    }
+
 }
