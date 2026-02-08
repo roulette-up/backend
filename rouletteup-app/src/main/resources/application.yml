@@ -7,3 +7,8 @@ spring:
     group:
       local: common, domain, infrastructure
       prod: common, domain, infrastructure
+
+internal:
+  admin:
+    token: ${TOKEN:CHANGE}
+    token-header-name: ${TOKEN_HEADER:X-Internal-Token}
