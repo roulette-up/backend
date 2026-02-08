@@ -1,21 +1,33 @@
 package kr.co.rouletteup.app.notification.controller
 
 import kotlin.test.Test
+import kr.co.rouletteup.app.auth.controller.AuthController
 import kr.co.rouletteup.app.notification.dto.NotificationRes
 import kr.co.rouletteup.app.notification.usecase.GetNotificationUseCase
 import kr.co.rouletteup.app.notification.usecase.MarkNotificationAsReadUseCase
+import kr.co.rouletteup.internal.filter.AdminInternalAuthFilter
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.willDoNothing
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 
-@WebMvcTest(NotificationController::class)
+@WebMvcTest(
+    controllers = [NotificationController::class],
+    excludeFilters = [
+        ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            classes = [AdminInternalAuthFilter::class]
+        )
+    ]
+)
 class NotificationControllerTest {
 
     @Autowired
