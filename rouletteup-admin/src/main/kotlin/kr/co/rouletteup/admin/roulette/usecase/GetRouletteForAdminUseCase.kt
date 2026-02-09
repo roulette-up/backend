@@ -19,14 +19,14 @@ class GetRouletteForAdminUseCase(
 ) {
 
     /**
-     * 전체 룰렛 조회 메서드 (soft delete 포함)
+     * 전체 룰렛 조회 메서드
      *
      * @param pageable 페이지 크기
      * @return 룰렛 정보 페이징 DTO
      */
     @Transactional(readOnly = true)
     fun getRoulettes(pageable: Pageable): Page<AdminRouletteRes> =
-        dailyRouletteService.readAllIncludeDeleted(pageable)
+        dailyRouletteService.readAll(pageable)
             .map { roulette -> AdminRouletteRes.form(roulette) }
 
     /**

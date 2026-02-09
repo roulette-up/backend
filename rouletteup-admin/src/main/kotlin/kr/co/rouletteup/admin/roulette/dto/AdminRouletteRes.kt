@@ -1,7 +1,6 @@
 package kr.co.rouletteup.admin.roulette.dto
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 import kr.co.rouletteup.domain.roulette.entity.DailyRoulette
 
 data class AdminRouletteRes(
@@ -10,7 +9,6 @@ data class AdminRouletteRes(
     val totalBudget: Long,
     val usedBudget: Long,
     val participantCount: Int,
-    val deletedAt: LocalDateTime?
 ) {
 
     companion object {
@@ -21,7 +19,6 @@ data class AdminRouletteRes(
                 totalBudget = dailyRoulette.totalBudget,
                 usedBudget = dailyRoulette.usedBudget,
                 participantCount = dailyRoulette.participantCount,
-                deletedAt = dailyRoulette.deletedAt
             )
     }
 }

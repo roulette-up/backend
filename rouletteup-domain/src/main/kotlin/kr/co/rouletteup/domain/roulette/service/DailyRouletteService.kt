@@ -19,8 +19,8 @@ class DailyRouletteService(
     fun readByRouletteDate(rouletteDate: LocalDate): DailyRoulette? =
         dailyRouletteRepository.findByRouletteDate(rouletteDate)
 
-    fun readAllIncludeDeleted(pageable: Pageable): Page<DailyRoulette> =
-        dailyRouletteRepository.findAllIncludeDeleted(pageable)
+    fun readAll(pageable: Pageable): Page<DailyRoulette> =
+        dailyRouletteRepository.findAll(pageable)
 
     fun existsToday(today: LocalDate): Boolean =
         dailyRouletteRepository.existsByRouletteDate(today)
