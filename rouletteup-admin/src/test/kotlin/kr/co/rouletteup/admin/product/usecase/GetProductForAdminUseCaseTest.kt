@@ -53,7 +53,7 @@ class GetProductForAdminUseCaseTest {
     inner class GetProducts {
 
         @Test
-        fun `전체 상품을 soft delete 포함 페이징 조회하고 AdminProductSummary로 변환한다`() {
+        fun `전체 상품을 페이징 조회하고 AdminProductSummary로 변환한다`() {
             // given
             val pageable: Pageable = PageRequest.of(0, 20)
 
@@ -65,7 +65,7 @@ class GetProductForAdminUseCaseTest {
             val dto1 = mockk<AdminProductSummary>(relaxed = true)
             val dto2 = mockk<AdminProductSummary>(relaxed = true)
 
-            every { productService.readAllIncludeDeleted(pageable) } returns page
+            every { productService.readAll(pageable) } returns page
             every { AdminProductSummary.from(product1) } returns dto1
             every { AdminProductSummary.from(product2) } returns dto2
 
@@ -77,7 +77,7 @@ class GetProductForAdminUseCaseTest {
             assertThat(result.content[0]).isSameAs(dto1)
             assertThat(result.content[1]).isSameAs(dto2)
 
-            verify(exactly = 1) { productService.readAllIncludeDeleted(pageable) }
+            verify(exactly = 1) { productService.readAll(pageable) }
             verify(exactly = 1) { AdminProductSummary.from(product1) }
             verify(exactly = 1) { AdminProductSummary.from(product2) }
         }
@@ -88,13 +88,13 @@ class GetProductForAdminUseCaseTest {
     inner class GetProductById {
 
         @Test
-        fun `상품이 존재하면 soft delete 포함 단건 조회 후 AdminProductDetail로 변환한다`() {
+        fun `상품이 존재하면 단건 조회 후 AdminProductDetail로 변환한다`() {
             // given
             val productId = 1L
             val product = mockk<Product>(relaxed = true)
             val expected = mockk<AdminProductDetail>(relaxed = true)
 
-            every { productService.readByIdIncludeDeleted(productId) } returns product
+            every { productService.readById(productId) } returns product
             every { AdminProductDetail.from(product) } returns expected
 
             // when
@@ -103,7 +103,7 @@ class GetProductForAdminUseCaseTest {
             // then
             assertEquals(expected, result)
 
-            verify(exactly = 1) { productService.readByIdIncludeDeleted(productId) }
+            verify(exactly = 1) { productService.readById(productId) }
             verify(exactly = 1) { AdminProductDetail.from(product) }
         }
 
@@ -111,7 +111,7 @@ class GetProductForAdminUseCaseTest {
         fun `상품이 없으면 NOT_FOUND 예외를 던진다`() {
             // given
             val productId = 999L
-            every { productService.readByIdIncludeDeleted(productId) } returns null
+            every { productService.readById(productId) } returns null
 
             // when
             val exception = assertThrows<ProductException> {
@@ -121,7 +121,7 @@ class GetProductForAdminUseCaseTest {
             // then
             assertEquals(ProductErrorType.NOT_FOUND, exception.errorType)
 
-            verify(exactly = 1) { productService.readByIdIncludeDeleted(productId) }
+            verify(exactly = 1) { productService.readById(productId) }
             verify(exactly = 0) { AdminProductDetail.from(any()) }
         }
     }

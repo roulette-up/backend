@@ -165,7 +165,6 @@ class AdminProductControllerTest {
                 stockQuantity = 1,
                 price = 1_000L,
                 createdAt = LocalDateTime.now(),
-                null
             )
 
             given(getProductForAdminUseCase.getProductById(productId))

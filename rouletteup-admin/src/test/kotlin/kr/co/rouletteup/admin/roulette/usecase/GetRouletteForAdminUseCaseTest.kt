@@ -55,7 +55,7 @@ class GetRouletteForAdminUseCaseTest {
     @DisplayName("룰렛 목록 조회")
     inner class GetRoulettes {
         @Test
-        fun `전체 룰렛을 soft delete 포함 페이징 조회하고 AdminRouletteRes로 변환한다`() {
+        fun `전체 룰렛을 페이징 조회하고 AdminRouletteRes로 변환한다`() {
             // given
             val pageable: Pageable = PageRequest.of(0, 20)
 
@@ -67,7 +67,7 @@ class GetRouletteForAdminUseCaseTest {
             val dto1 = mockk<AdminRouletteRes>(relaxed = true)
             val dto2 = mockk<AdminRouletteRes>(relaxed = true)
 
-            every { dailyRouletteService.readAllIncludeDeleted(pageable) } returns page
+            every { dailyRouletteService.readAll(pageable) } returns page
             every { AdminRouletteRes.form(roulette1) } returns dto1
             every { AdminRouletteRes.form(roulette2) } returns dto2
 
@@ -79,7 +79,7 @@ class GetRouletteForAdminUseCaseTest {
             assertThat(result.content[0]).isSameAs(dto1)
             assertThat(result.content[1]).isSameAs(dto2)
 
-            verify(exactly = 1) { dailyRouletteService.readAllIncludeDeleted(pageable) }
+            verify(exactly = 1) { dailyRouletteService.readAll(pageable) }
             verify(exactly = 1) { AdminRouletteRes.form(roulette1) }
             verify(exactly = 1) { AdminRouletteRes.form(roulette2) }
         }
@@ -156,7 +156,7 @@ class GetRouletteForAdminUseCaseTest {
 
             // then
             verify(exactly = 1) { rouletteBudgetSettingService.readFutureSettings(today) }
-            verify(exactly = 0) { dailyRouletteService.readAllIncludeDeleted(any()) }
+            verify(exactly = 0) { dailyRouletteService.readAll(any()) }
             verify(exactly = 0) { dailyRouletteService.readByRouletteDate(any()) }
 
             assertEquals(2, result.size)

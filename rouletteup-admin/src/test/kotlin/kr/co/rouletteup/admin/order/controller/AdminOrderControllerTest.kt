@@ -63,7 +63,7 @@ class AdminOrderControllerTest {
                 status = OrderStatus.COMPLETED,
                 productId = 10L,
                 userId = 1L,
-                deletedAt = null
+                nickname = "test"
             )
 
             val page = PageImpl(listOf(response), pageable, 1)
@@ -105,7 +105,7 @@ class AdminOrderControllerTest {
                 status = OrderStatus.COMPLETED,
                 productId = 10L,
                 userId = 1L,
-                deletedAt = null
+                nickname = "test"
             )
 
             val page = PageImpl(listOf(response), pageable, 1)
@@ -148,7 +148,7 @@ class AdminOrderControllerTest {
                 productId = 10L,
                 createdAt = LocalDateTime.now(),
                 userId = 1L,
-                deletedAt = null
+                nickname = "test"
             )
 
             given(getOrderForAdminUseCase.getOrderById(orderId))

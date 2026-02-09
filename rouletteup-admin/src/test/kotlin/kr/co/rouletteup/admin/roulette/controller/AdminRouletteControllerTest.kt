@@ -65,7 +65,6 @@ class AdminRouletteControllerTest {
                 totalBudget = 100_000L,
                 usedBudget = 30_000L,
                 participantCount = 50,
-                deletedAt = null
             )
 
             val page = PageImpl(listOf(response), pageable, 1)
@@ -107,7 +106,6 @@ class AdminRouletteControllerTest {
                 totalBudget = 100_000L,
                 usedBudget = 30_000L,
                 participantCount = 50,
-                deletedAt = null
             )
 
             given(getRouletteForAdminUseCase.getTodayRoulette())

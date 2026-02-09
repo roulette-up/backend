@@ -51,7 +51,6 @@ class AdminUserControllerTest {
             val response = AdminUserSummary(
                 id = 1L,
                 nickname = "tester",
-                deletedAt = null,
             )
 
             val page = PageImpl(listOf(response), pageable, 1)
@@ -91,7 +90,6 @@ class AdminUserControllerTest {
                 id = userId,
                 nickname = "tester",
                 pointDebt = 100L,
-                deletedAt = null,
                 createdAt = LocalDateTime.now(),
                 role = Role.USER
             )
