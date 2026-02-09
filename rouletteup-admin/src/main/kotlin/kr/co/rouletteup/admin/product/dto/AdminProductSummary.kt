@@ -1,6 +1,5 @@
 package kr.co.rouletteup.admin.product.dto
 
-import java.time.LocalDateTime
 import kr.co.rouletteup.domain.product.entity.Product
 
 data class AdminProductSummary(
@@ -8,7 +7,6 @@ data class AdminProductSummary(
     val name: String,
     val stockQuantity: Int,
     val price: Long,
-    val deletedAt: LocalDateTime?,
 ) {
 
     companion object {
@@ -18,7 +16,6 @@ data class AdminProductSummary(
                 name = product.name,
                 stockQuantity = product.stockQuantity,
                 price = product.price,
-                deletedAt = product.deletedAt
             )
     }
 }

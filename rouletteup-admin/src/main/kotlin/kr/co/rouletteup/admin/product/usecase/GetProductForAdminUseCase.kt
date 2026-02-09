@@ -16,25 +16,25 @@ class GetProductForAdminUseCase(
 ) {
 
     /**
-     * 전체 상품 조회 메서드 (soft delete 포함)
+     * 전체 상품 조회 메서드
      *
      * @param pageable 페이지 크기
      * @return 상품 페이징 DTO
      */
     @Transactional(readOnly = true)
     fun getProducts(pageable: Pageable): Page<AdminProductSummary> =
-        productService.readAllIncludeDeleted(pageable)
+        productService.readAll(pageable)
             .map { product -> AdminProductSummary.from(product) }
 
     /**
-     * 특정 상품 조회 메서드 (soft delete 포함)
+     * 특정 상품 조회 메서드
      *
      * @param productId 상품 ID(PK)
      * @return 상품 정보 DTO
      */
     @Transactional(readOnly = true)
     fun getProductById(productId: Long): AdminProductDetail {
-        val product = productService.readByIdIncludeDeleted(productId)
+        val product = productService.readById(productId)
             ?: throw ProductException(ProductErrorType.NOT_FOUND)
 
         return AdminProductDetail.from(product)
