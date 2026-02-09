@@ -19,12 +19,17 @@ class AdminAuthInterceptor(
 
     /**
      * 어드민 권한 확인 로직
+     * - preflight 허용을 위해 OPTIONS 메서드는 무시
      */
     override fun preHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
+        if (request.method.equals("OPTIONS", ignoreCase = true)) {
+            return true
+        }
+
         val userId = request.getHeader(HEADER_USER_ID)?.toLongOrNull()
             ?: throw AdminAuthException(AdminAuthErrorType.FORBIDDEN)
 
