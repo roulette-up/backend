@@ -21,10 +21,7 @@ class UserService(
     fun readByNickname(nickname: String): User? =
         userRepository.findByNickname(nickname)
 
-    fun readByIdIncludeDeleted(id: Long): User? =
-        userRepository.findByIdIncludeDeleted(id)
-
-    fun readAllIncludingDeleted(pageable: Pageable): Page<User> =
-        userRepository.findAllIncludeDeleted(pageable)
+    fun readAll(pageable: Pageable): Page<User> =
+        userRepository.findAll(pageable)
 
 }

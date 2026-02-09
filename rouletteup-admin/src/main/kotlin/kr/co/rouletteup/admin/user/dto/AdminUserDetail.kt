@@ -10,7 +10,6 @@ data class AdminUserDetail(
     val pointDebt: Long,
     val role: Role,
     val createdAt: LocalDateTime,
-    val deletedAt: LocalDateTime?,
 ) {
 
     companion object {
@@ -21,7 +20,6 @@ data class AdminUserDetail(
                 pointDebt = user.pointDebt,
                 role = user.role,
                 createdAt = user.createdAt,
-                deletedAt = user.deletedAt
             )
     }
 }
