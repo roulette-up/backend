@@ -1,6 +1,8 @@
 package kr.co.rouletteup.domain.point.service
 
 import java.time.LocalDate
+import kr.co.rouletteup.domain.point.dto.PointRecordWithNicknameDto
+import kr.co.rouletteup.domain.point.dto.UserPointDto
 import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.repository.PointRecordRepository
 import kr.co.rouletteup.domain.point.type.PointStatus
@@ -32,11 +34,14 @@ class PointRecordService(
     fun readAllByIds(ids: List<Long>): List<PointRecord> =
         pointRecordRepository.findAllByIdIn(ids)
 
-    fun readAllByUserIdIdIncludeDeleted(userId: Long, pageable: Pageable): Page<PointRecord> =
-        pointRecordRepository.findAllByUserIdIdIncludeDeleted(userId, pageable)
+    fun readAllWithNicknameByUserId(userId: Long, pageable: Pageable): Page<PointRecordWithNicknameDto> =
+        pointRecordRepository.findAllWithNicknameByUserId(userId, pageable)
 
-    fun readAllByRouletteDateIncludeDeleted(date: LocalDate, pageable: Pageable): Page<PointRecord> =
-        pointRecordRepository.findAllByRouletteDateIncludeDeleted(date, pageable)
+    fun readAllWithNicknameByRouletteDate(date: LocalDate, pageable: Pageable): Page<PointRecordWithNicknameDto> =
+        pointRecordRepository.findAllWithNicknameByRouletteDate(date, pageable)
+
+    fun readUserPointByUserId(userId: Long): UserPointDto? =
+        pointRecordRepository.findUserPointByUserId(userId)
 
     fun existsByUserIdAndRouletteDate(userId: Long, rouletteDate: LocalDate): Boolean =
         pointRecordRepository.existsByUserIdAndRouletteDate(userId, rouletteDate)
