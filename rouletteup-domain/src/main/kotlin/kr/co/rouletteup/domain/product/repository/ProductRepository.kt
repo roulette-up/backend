@@ -1,8 +1,6 @@
 package kr.co.rouletteup.domain.product.repository
 
 import kr.co.rouletteup.domain.product.entity.Product
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -37,25 +35,4 @@ interface ProductRepository : JpaRepository<Product, Long> {
         @Param("amount") amount: Int,
     ): Int
 
-    @Query(
-        value = """
-            SELECT *
-            FROM product
-            ORDER BY id DESC
-        """,
-        countQuery = """
-            SELECT COUNT(*)
-            FROM product
-        """, nativeQuery = true
-    )
-    fun findAllIncludeDeleted(pageable: Pageable): Page<Product>
-
-    @Query(
-        value = """
-        SELECT *
-        FROM product
-        WHERE id = :productId
-    """, nativeQuery = true
-    )
-    fun findByIdIncludeDeleted(@Param("productId") productId: Long): Product?
 }

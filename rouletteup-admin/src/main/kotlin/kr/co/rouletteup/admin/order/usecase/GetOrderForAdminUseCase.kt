@@ -16,7 +16,7 @@ class GetOrderForAdminUseCase(
 ) {
 
     /**
-     * 사용자별 주문 내역 조회 메서드 (soft delete 포함)
+     * 사용자별 주문 내역 조회 메서드
      *
      * @param userId 사용자 ID(PK)
      * @param pageable 페이지 크기
@@ -24,11 +24,11 @@ class GetOrderForAdminUseCase(
      */
     @Transactional(readOnly = true)
     fun getOrdersByUserId(userId: Long, pageable: Pageable): Page<AdminOrderSummary> =
-        orderService.readAllByUserIdIncludeDeleted(userId, pageable)
+        orderService.readAllWithNicknameByUserId(userId, pageable)
             .map { order -> AdminOrderSummary.from(order) }
 
     /**
-     * 상품별 주문 내역 조회 메서드 (soft delete 포함)
+     * 상품별 주문 내역 조회 메서드
      *
      * @param productId 상품 ID(PK)
      * @param pageable 페이지 크기
@@ -36,18 +36,18 @@ class GetOrderForAdminUseCase(
      */
     @Transactional(readOnly = true)
     fun getOrdersByProductId(productId: Long, pageable: Pageable): Page<AdminOrderSummary> =
-        orderService.readAllByProductIdIncludeDeleted(productId, pageable)
+        orderService.readAllWithNicknameByProductId(productId, pageable)
             .map { order -> AdminOrderSummary.from(order) }
 
     /**
-     * 특정 주문 내역 조회 메서드 (soft delete 포함)
+     * 특정 주문 내역 조회 메서드
      *
      * @param orderId 주문 내역 ID(PK)
      * @return 주문 내역 정보 DTO
      */
     @Transactional(readOnly = true)
     fun getOrderById(orderId: Long): AdminOrderDetail {
-        val order = orderService.readByIdIncludeDeleted(orderId)
+        val order = orderService.readWithNicknameById(orderId)
             ?: throw OrderException(OrderErrorType.NOT_FOUND)
 
         return AdminOrderDetail.from(order)

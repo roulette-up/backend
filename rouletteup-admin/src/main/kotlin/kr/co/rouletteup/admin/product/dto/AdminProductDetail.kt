@@ -9,7 +9,6 @@ data class AdminProductDetail(
     val stockQuantity: Int,
     val price: Long,
     val createdAt: LocalDateTime,
-    val deletedAt: LocalDateTime?,
 ) {
 
     companion object {
@@ -20,7 +19,6 @@ data class AdminProductDetail(
                 stockQuantity = product.stockQuantity,
                 price = product.price,
                 createdAt = product.createdAt,
-                deletedAt = product.deletedAt
             )
     }
 }

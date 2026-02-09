@@ -61,7 +61,7 @@ class AdminPointControllerTest {
                 status = PointStatus.AVAILABLE,
                 expiresAt = LocalDate.of(2026, 3, 3),
                 rouletteDate = LocalDate.of(2026, 2, 1),
-                deletedAt = null
+                nickname = "test"
             )
             val page = PageImpl(listOf(response), pageable, 1)
 
@@ -106,7 +106,7 @@ class AdminPointControllerTest {
                 status = PointStatus.AVAILABLE,
                 expiresAt = LocalDate.of(2026, 3, 3),
                 rouletteDate = LocalDate.of(2026, 2, 1),
-                deletedAt = null
+                nickname = "test"
             )
             val page = PageImpl(listOf(response), pageable, 1)
 

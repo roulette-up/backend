@@ -14,7 +14,7 @@ class GetPointForAdminUseCase(
 ) {
 
     /**
-     * 사용자를 통한 포인트 내역 조회 메서드 (soft delete 포함)
+     * 사용자를 통한 포인트 내역 조회 메서드
      *
      * @param userId 사용자 ID(PK)
      * @param pageable 페이지 크기
@@ -22,11 +22,11 @@ class GetPointForAdminUseCase(
      */
     @Transactional(readOnly = true)
     fun getPointRecordByUserId(userId: Long, pageable: Pageable): Page<AdminPointRes> =
-        pointRecordService.readAllByUserIdIdIncludeDeleted(userId, pageable)
+        pointRecordService.readAllWithNicknameByUserId(userId, pageable)
             .map { point -> AdminPointRes.from(point) }
 
     /**
-     * 룰렛 날짜를 통한 포인트 내역 조회 메서드 (soft delete 포함)
+     * 룰렛 날짜를 통한 포인트 내역 조회 메서드
      *
      * @param rouletteDate 룰렛 날짜
      * @param pageable 페이지 크기
@@ -34,7 +34,7 @@ class GetPointForAdminUseCase(
      */
     @Transactional(readOnly = true)
     fun getPointRecordByRouletteDate(rouletteDate: LocalDate, pageable: Pageable): Page<AdminPointRes> =
-        pointRecordService.readAllByRouletteDateIncludeDeleted(rouletteDate, pageable)
+        pointRecordService.readAllWithNicknameByRouletteDate(rouletteDate, pageable)
             .map { point -> AdminPointRes.from(point) }
 
 }

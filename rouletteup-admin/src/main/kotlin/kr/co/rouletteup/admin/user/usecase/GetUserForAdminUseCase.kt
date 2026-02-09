@@ -16,25 +16,25 @@ class GetUserForAdminUseCase(
 ) {
 
     /**
-     * 전체 사용자 조회 메서드 (soft delete 포함)
+     * 전체 사용자 조회 메서드
      *
      * @param pageable 페이지 크기
      * @return 사용자 페이징 DTO
      */
     @Transactional(readOnly = true)
     fun getUsers(pageable: Pageable): Page<AdminUserSummary> =
-        userService.readAllIncludingDeleted(pageable)
+        userService.readAll(pageable)
             .map { user -> AdminUserSummary.from(user) }
 
     /**
-     * 특정 사용자 조회 메서드 (soft delete 포함)
+     * 특정 사용자 조회 메서드
      *
      * @param userId 사용자 ID(PK)
      * @return 사용자 정보 DTO
      */
     @Transactional(readOnly = true)
     fun getUserById(userId: Long): AdminUserDetail {
-        val user = userService.readByIdIncludeDeleted(userId)
+        val user = userService.readById(userId)
             ?: throw UserException(UserErrorType.NOT_FOUND)
 
         return AdminUserDetail.from(user)

@@ -42,7 +42,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 9,
                                         "createdAt": "2026-02-07T14:35:00.489485",
-                                        "deletedAt": null
+                                        "nickname": "test3"
                                     },
                                     {
                                         "id": 2,
@@ -53,7 +53,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 6,
                                         "createdAt": "2026-02-07T10:56:26.427338",
-                                        "deletedAt": null
+                                        "nickname": "test2"
                                     },
                                     {
                                         "id": 1,
@@ -64,7 +64,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T10:55:49.72708",
-                                        "deletedAt": null
+                                        "nickname": "test1"
                                     }
                                 ],
                                 "page": {
@@ -133,7 +133,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T14:35:00.489485",
-                                        "deletedAt": null
+                                        "nickname": "test3"
                                     },
                                     {
                                         "id": 4,
@@ -144,7 +144,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T10:56:26.427338",
-                                        "deletedAt": null
+                                        "nickname": "test2"
                                     },
                                     {
                                         "id": 1,
@@ -155,7 +155,7 @@ interface AdminOrderApi {
                                         "userId": 1,
                                         "productId": 1,
                                         "createdAt": "2026-02-07T10:55:49.72708",
-                                        "deletedAt": null
+                                        "nickname": "test1"
                                     }
                                 ],
                                 "page": {
@@ -229,7 +229,7 @@ interface AdminOrderApi {
                                 "status": "USER_CANCELLED",
                                 "userId": 1,
                                 "productId": 1,
-                                "deletedAt": null
+                                "nickname": "test3"
                             }
                         }
                         """

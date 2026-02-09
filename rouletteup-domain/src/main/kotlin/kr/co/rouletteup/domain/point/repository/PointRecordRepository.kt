@@ -1,7 +1,6 @@
 package kr.co.rouletteup.domain.point.repository
 
 import java.time.LocalDate
-import kr.co.rouletteup.domain.order.entity.Order
 import kr.co.rouletteup.domain.point.entity.PointRecord
 import kr.co.rouletteup.domain.point.type.PointStatus
 import org.springframework.data.domain.Page
@@ -11,7 +10,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface PointRecordRepository : JpaRepository<PointRecord, Long> {
+interface PointRecordRepository : JpaRepository<PointRecord, Long>, CustomPointRecordRepository {
     fun existsByUserIdAndRouletteDate(userId: Long, rouletteDate: LocalDate): Boolean
     fun findAllByUserId(userId: Long, pageable: Pageable): Page<PointRecord>
     fun findAllByUserIdAndStatusOrderByExpiresAtAsc(userId: Long, status: PointStatus): List<PointRecord>
@@ -38,41 +37,5 @@ interface PointRecordRepository : JpaRepository<PointRecord, Long> {
     """, nativeQuery = true
     )
     fun updateStatusToExpiredByDate(@Param("expiresAt") expiresAt: LocalDate)
-
-    @Query(
-        value = """
-            SELECT *
-            FROM point_record
-            WHERE user_id = :userId
-            ORDER BY id DESC
-        """,
-        countQuery = """
-            SELECT COUNT(*)
-            FROM point_record
-            WHERE user_id = :userId
-        """, nativeQuery = true
-    )
-    fun findAllByUserIdIdIncludeDeleted(
-        @Param("userId") userId: Long,
-        pageable: Pageable
-    ): Page<PointRecord>
-
-    @Query(
-        value = """
-            SELECT *
-            FROM point_record
-            WHERE roulette_date = :date
-            ORDER BY id DESC
-        """,
-        countQuery = """
-            SELECT COUNT(*)
-            FROM point_record
-            WHERE roulette_date = :date
-        """, nativeQuery = true
-    )
-    fun findAllByRouletteDateIncludeDeleted(
-        @Param("date") date: LocalDate,
-        pageable: Pageable
-    ): Page<PointRecord>
 
 }

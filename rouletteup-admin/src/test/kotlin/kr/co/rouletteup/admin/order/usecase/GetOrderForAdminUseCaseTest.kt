@@ -11,6 +11,7 @@ import io.mockk.verify
 import kotlin.test.assertEquals
 import kr.co.rouletteup.admin.order.dto.AdminOrderDetail
 import kr.co.rouletteup.admin.order.dto.AdminOrderSummary
+import kr.co.rouletteup.domain.order.dto.OrderWithNicknameDto
 import kr.co.rouletteup.domain.order.entity.Order
 import kr.co.rouletteup.domain.order.exception.OrderErrorType
 import kr.co.rouletteup.domain.order.exception.OrderException
@@ -53,19 +54,19 @@ class GetOrderForAdminUseCaseTest {
     inner class GetOrdersByUserId {
 
         @Test
-        fun `userId로 soft delete 포함 페이징 조회하고 AdminOrderSummary로 변환한다`() {
+        fun `userId로 페이징 조회하고 AdminOrderSummary로 변환한다`() {
             // given
             val userId = 1L
             val pageable: Pageable = PageRequest.of(0, 20)
 
-            val order1 = mockk<Order>(relaxed = true)
-            val order2 = mockk<Order>(relaxed = true)
+            val order1 = mockk<OrderWithNicknameDto>(relaxed = true)
+            val order2 = mockk<OrderWithNicknameDto>(relaxed = true)
             val page = PageImpl(listOf(order1, order2), pageable, 2)
 
             val dto1 = mockk<AdminOrderSummary>(relaxed = true)
             val dto2 = mockk<AdminOrderSummary>(relaxed = true)
 
-            every { orderService.readAllByUserIdIncludeDeleted(userId, pageable) } returns page
+            every { orderService.readAllWithNicknameByUserId(userId, pageable) } returns page
             every { AdminOrderSummary.from(order1) } returns dto1
             every { AdminOrderSummary.from(order2) } returns dto2
 
@@ -77,7 +78,7 @@ class GetOrderForAdminUseCaseTest {
             assertThat(result.content[0]).isSameAs(dto1)
             assertThat(result.content[1]).isSameAs(dto2)
 
-            verify(exactly = 1) { orderService.readAllByUserIdIncludeDeleted(userId, pageable) }
+            verify(exactly = 1) { orderService.readAllWithNicknameByUserId(userId, pageable) }
             verify(exactly = 1) { AdminOrderSummary.from(order1) }
             verify(exactly = 1) { AdminOrderSummary.from(order2) }
         }
@@ -88,19 +89,19 @@ class GetOrderForAdminUseCaseTest {
     inner class GetOrdersByProductId {
 
         @Test
-        fun `productId로 해당 상품 주문만 soft delete 포함 페이징 조회하고 AdminOrderSummary로 변환한다`() {
+        fun `productId로 해당 상품 주문만 페이징 조회하고 AdminOrderSummary로 변환한다`() {
             // given
             val productId = 1L
             val pageable: Pageable = PageRequest.of(0, 20)
 
-            val order1 = mockk<Order>(relaxed = true)
-            val order2 = mockk<Order>(relaxed = true)
+            val order1 = mockk<OrderWithNicknameDto>(relaxed = true)
+            val order2 = mockk<OrderWithNicknameDto>(relaxed = true)
             val page = PageImpl(listOf(order1, order2), pageable, 2)
 
             val dto1 = mockk<AdminOrderSummary>(relaxed = true)
             val dto2 = mockk<AdminOrderSummary>(relaxed = true)
 
-            every { orderService.readAllByProductIdIncludeDeleted(productId, pageable) } returns page
+            every { orderService.readAllWithNicknameByProductId(productId, pageable) } returns page
             every { AdminOrderSummary.from(order1) } returns dto1
             every { AdminOrderSummary.from(order2) } returns dto2
 
@@ -112,7 +113,7 @@ class GetOrderForAdminUseCaseTest {
             assertThat(result.content[0]).isSameAs(dto1)
             assertThat(result.content[1]).isSameAs(dto2)
 
-            verify(exactly = 1) { orderService.readAllByProductIdIncludeDeleted(productId, pageable) }
+            verify(exactly = 1) { orderService.readAllWithNicknameByProductId(productId, pageable) }
             verify(exactly = 1) { AdminOrderSummary.from(order1) }
             verify(exactly = 1) { AdminOrderSummary.from(order2) }
         }
@@ -123,13 +124,13 @@ class GetOrderForAdminUseCaseTest {
     inner class GetOrderById {
 
         @Test
-        fun `주문이 존재하면 soft delete 포함 조회 후 AdminOrderDetail로 변환해 반환한다`() {
+        fun `주문이 존재하면 조회 후 AdminOrderDetail로 변환해 반환한다`() {
             // given
             val orderId = 10L
-            val order = mockk<Order>(relaxed = true)
+            val order = mockk<OrderWithNicknameDto>(relaxed = true)
             val expected = mockk<AdminOrderDetail>(relaxed = true)
 
-            every { orderService.readByIdIncludeDeleted(orderId) } returns order
+            every { orderService.readWithNicknameById(orderId) } returns order
             every { AdminOrderDetail.from(order) } returns expected
 
             // when
@@ -138,7 +139,7 @@ class GetOrderForAdminUseCaseTest {
             // then
             assertEquals(expected, result)
 
-            verify(exactly = 1) { orderService.readByIdIncludeDeleted(orderId) }
+            verify(exactly = 1) { orderService.readWithNicknameById(orderId) }
             verify(exactly = 1) { AdminOrderDetail.from(order) }
         }
 
@@ -146,7 +147,7 @@ class GetOrderForAdminUseCaseTest {
         fun `주문이 없으면 NOT_FOUND 예외를 던진다`() {
             // given
             val orderId = 999L
-            every { orderService.readByIdIncludeDeleted(orderId) } returns null
+            every { orderService.readWithNicknameById(orderId) } returns null
 
             // when
             val exception = assertThrows<OrderException> {
@@ -156,7 +157,7 @@ class GetOrderForAdminUseCaseTest {
             // then
             assertEquals(OrderErrorType.NOT_FOUND, exception.errorType)
 
-            verify(exactly = 1) { orderService.readByIdIncludeDeleted(orderId) }
+            verify(exactly = 1) { orderService.readWithNicknameById(orderId) }
             verify(exactly = 0) { AdminOrderDetail.from(any()) }
         }
     }

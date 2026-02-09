@@ -78,4 +78,54 @@ interface PointApi {
         )
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<*>
+
+    @Operation(summary = "사용자 현재 포인트 총합 조회 (부채 감소 포함)", description = "사용자 현재 포인트 총합 조회 API")
+    @ApiResponses(
+        ApiResponse(
+            responseCode = "200",
+            description = "사용자 현재 포인트 총합 조회 성공",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "사용자 현재 포인트 총합 조회 성공",
+                            value = """
+                        {
+                            "code": 200,
+                            "message": "요청이 성공하였습니다.",
+                            "data": {
+                                "point": 937
+                            }
+                        }
+                        """
+                        )
+                    ]
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "실패 - 사용자 존재하지 않음",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    examples = [
+                        ExampleObject(
+                            name = "사용자 존재하지 않음",
+                            value = """
+                            {
+                              "code": "U001",
+                              "message": "사용자가 존재하지 않습니다."
+                            }
+                            """
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    fun getUserPointByUserId(
+        @RequestHeader(value = "X-User-Id") userId: Long,
+    ): ResponseEntity<*>
 }

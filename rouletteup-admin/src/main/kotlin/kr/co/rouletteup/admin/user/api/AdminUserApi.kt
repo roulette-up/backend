@@ -35,18 +35,15 @@ interface AdminUserApi {
                                 "content": [
                                     {
                                         "id": 3,
-                                        "nickname": "닉네임3",
-                                        "deletedAt": null
+                                        "nickname": "닉네임3"
                                     },
                                     {
                                         "id": 2,
-                                        "nickname": "닉네임2",
-                                        "deletedAt": null
+                                        "nickname": "닉네임2"
                                     },
                                     {
                                         "id": 1,
-                                        "nickname": "닉네임1",
-                                        "deletedAt": "2026-02-07T17:11:55.775141"
+                                        "nickname": "닉네임1"
                                     }
                                 ],
                                 "page": {
@@ -115,8 +112,7 @@ interface AdminUserApi {
                                 "nickname": "a1",
                                 "pointDebt": 0,
                                 "role": "USER",
-                                "createdAt": "2026-02-07T17:09:59.482902",
-                                "deletedAt": "2026-02-07T17:11:55.775141"
+                                "createdAt": "2026-02-07T17:09:59.482902"
                             }
                         }
                         """
