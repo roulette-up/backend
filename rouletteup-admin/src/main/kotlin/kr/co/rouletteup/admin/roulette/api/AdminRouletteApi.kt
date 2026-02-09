@@ -40,8 +40,7 @@ interface AdminRouletteApi {
                                         "rouletteDate": "2026-02-07",
                                         "totalBudget": 100000,
                                         "usedBudget": 775,
-                                        "participantCount": 1,
-                                        "deletedAt": null
+                                        "participantCount": 1
                                     }
                                 ],
                                 "page": {
@@ -110,8 +109,7 @@ interface AdminRouletteApi {
                                 "rouletteDate": "2026-02-07",
                                 "totalBudget": 100000,
                                 "usedBudget": 775,
-                                "participantCount": 1,
-                                "deletedAt": null
+                                "participantCount": 1
                             }
                         }
                         """

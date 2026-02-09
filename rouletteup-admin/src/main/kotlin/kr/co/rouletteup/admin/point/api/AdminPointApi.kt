@@ -42,7 +42,7 @@ interface AdminPointApi {
                                         "expiresAt": "2026-02-13",
                                         "userId": 1,
                                         "rouletteDate": "2026-01-03",
-                                        "deletedAt": null
+                                        "nickname": "test3"
                                     },
                                     {
                                         "id": 2,
@@ -52,7 +52,7 @@ interface AdminPointApi {
                                         "expiresAt": "2026-02-10",
                                         "userId": 1,
                                         "rouletteDate": "2026-01-02",
-                                        "deletedAt": null
+                                        "nickname": "test2"
                                     },
                                     {
                                         "id": 1,
@@ -62,7 +62,7 @@ interface AdminPointApi {
                                         "expiresAt": "2026-02-09",
                                         "userId": 1,
                                         "rouletteDate": "2026-01-01",
-                                        "deletedAt": null
+                                        "nickname": "test1"
                                     }
                                 ],
                                 "page": {
@@ -138,7 +138,7 @@ interface AdminPointApi {
                                         "expiresAt": "2026-03-09",
                                         "userId": 3,
                                         "rouletteDate": "2026-02-07",
-                                        "deletedAt": null
+                                        "nickname": "test"
                                     }
                                 ],
                                 "page": {

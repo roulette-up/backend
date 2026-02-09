@@ -127,22 +127,19 @@ interface AdminProductApi {
                                         "id": 3,
                                         "name": "상품3",
                                         "stockQuantity": 23,
-                                        "price": 3000,
-                                        "deletedAt": null
+                                        "price": 3000
                                     },
                                     {
                                         "id": 2,
                                         "name": "상품2",
                                         "stockQuantity": 56,
-                                        "price": 2000,
-                                        "deletedAt": null
+                                        "price": 2000
                                     },
                                     {
                                         "id": 1,
                                         "name": "상품1",
                                         "stockQuantity": 10,
-                                        "price": 1000,
-                                        "deletedAt": null
+                                        "price": 1000
                                     }
                                 ],
                                 "page": {
@@ -211,8 +208,7 @@ interface AdminProductApi {
                                 "name": "상품1",
                                 "stockQuantity": 3,
                                 "price": 133,
-                                "createdAt": "2026-02-07T21:22:01.565634",
-                                "deletedAt": null
+                                "createdAt": "2026-02-07T21:22:01.565634"
                             }
                         }
                         """
