@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/points")
+@RequestMapping("/api/v1")
 class PointController(
     private val getPointRecordUseCase: GetPointRecordUseCase,
 ) : PointApi {
 
-    @GetMapping("/records")
+    @GetMapping("/points/records")
     override fun getMyRecords(
         @RequestHeader(value = "X-User-Id") userId: Long,
         @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
@@ -26,6 +26,16 @@ class PointController(
         ResponseEntity.ok(
             SuccessResponse.from(
                 getPointRecordUseCase.getMyRecords(userId, pageable)
+            )
+        )
+
+    @GetMapping("/users/points")
+    override fun getUserPointByUserId(
+        @RequestHeader(value = "X-User-Id") userId: Long,
+    ): ResponseEntity<*> =
+        ResponseEntity.ok(
+            SuccessResponse.from(
+                getPointRecordUseCase.getUserPointByUserId(userId)
             )
         )
 }
