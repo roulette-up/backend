@@ -13,3 +13,9 @@ internal:
     base-url: ${BASE_URL:http://localhost:8080}
     token: ${TOKEN:CHANGE}
     token-header-name: ${TOKEN_HEADER:X-Internal-Token}
+
+springdoc:
+  api-docs:
+    path: /admin/v3/api-docs
+  swagger-ui:
+    path: /admin/swagger-ui.html
