@@ -1,5 +1,6 @@
 package kr.co.rouletteup.domain.order.service
 
+import kr.co.rouletteup.domain.order.dto.OrderWithNicknameDto
 import kr.co.rouletteup.domain.order.entity.Order
 import kr.co.rouletteup.domain.order.repository.OrderRepository
 import org.springframework.data.domain.Page
@@ -21,12 +22,12 @@ class OrderService(
     fun readAllByUserId(userId: Long, pageable: Pageable): Page<Order> =
         orderRepository.findAllByUserId(userId, pageable)
 
-    fun readByIdIncludeDeleted(id: Long): Order? =
-        orderRepository.findByIdIncludeDeleted(id)
+    fun readWithNicknameById(id: Long): OrderWithNicknameDto? =
+        orderRepository.findWithNicknameById(id)
 
-    fun readAllByUserIdIncludeDeleted(userId: Long, pageable: Pageable): Page<Order> =
-        orderRepository.findAllByUserIdIdIncludeDeleted(userId, pageable)
+    fun readAllWithNicknameByUserId(userId: Long, pageable: Pageable): Page<OrderWithNicknameDto> =
+        orderRepository.findAllWithNicknameByUserId(userId, pageable)
 
-    fun readAllByProductIdIncludeDeleted(productId: Long, pageable: Pageable): Page<Order> =
-        orderRepository.findAllByProductIdIdIncludeDeleted(productId, pageable)
+    fun readAllWithNicknameByProductId(productId: Long, pageable: Pageable): Page<OrderWithNicknameDto> =
+        orderRepository.findAllWithNicknameByProductId(productId, pageable)
 }

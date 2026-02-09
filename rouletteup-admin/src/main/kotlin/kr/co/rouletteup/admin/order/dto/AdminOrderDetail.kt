@@ -1,7 +1,7 @@
 package kr.co.rouletteup.admin.order.dto
 
 import java.time.LocalDateTime
-import kr.co.rouletteup.domain.order.entity.Order
+import kr.co.rouletteup.domain.order.dto.OrderWithNicknameDto
 import kr.co.rouletteup.domain.order.type.OrderStatus
 
 data class AdminOrderDetail(
@@ -13,21 +13,21 @@ data class AdminOrderDetail(
     val userId: Long,
     val productId: Long,
     val createdAt: LocalDateTime,
-    val deletedAt: LocalDateTime?,
+    val nickname: String,
 ) {
 
     companion object {
-        fun from(order: Order): AdminOrderDetail =
+        fun from(order: OrderWithNicknameDto): AdminOrderDetail =
             AdminOrderDetail(
-                id = order.id!!,
+                id = order.id,
                 quantity = order.quantity,
                 productPrice = order.productPrice,
                 productName = order.productName,
                 status = order.status,
-                userId = order.user.id!!,
-                productId = order.product.id!!,
+                userId = order.userId,
+                productId = order.productId,
                 createdAt = order.createdAt,
-                deletedAt = order.deletedAt
+                nickname = order.nickname
             )
     }
 }
