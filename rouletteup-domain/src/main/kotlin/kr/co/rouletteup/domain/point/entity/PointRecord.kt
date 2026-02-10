@@ -60,33 +60,61 @@ class PointRecord(
     }
 
     /**
-     * 사용자에 의한 환불 처리
+     * 만료기한 지났는지 확인
      */
-    fun refundByUser(amount: Long) {
-        this.remainingPoint += amount
+    private fun isExpiredToday(today: LocalDate = LocalDate.now()): Boolean =
+        expiresAt.isBefore(today)
 
-        // 사용자 환불은 포인트 만료 기한이 지나면 상태 변화 x
-        if (this.status != PointStatus.EXPIRED) {
-            this.status = PointStatus.AVAILABLE
+    /**
+     * 사용자에 의한 환불 처리
+     *
+     * - CANCELED: 무시
+     * - USED:
+     *   - 만료 안 됨 -> AVAILABLE
+     *   - 만료 됨 -> EXPIRED
+     * - AVAILABLE: 그대로 AVAILABLE
+     * - EXPIRED: 그대로 EXPIRED
+     */
+    fun refundByUser(amount: Long, today: LocalDate = LocalDate.now()) {
+        if (status == PointStatus.CANCELED) return
+
+        remainingPoint += amount
+
+        status = when (status) {
+            PointStatus.USED ->
+                if (isExpiredToday(today)) PointStatus.EXPIRED else PointStatus.AVAILABLE
+
+            PointStatus.AVAILABLE -> PointStatus.AVAILABLE
+            PointStatus.EXPIRED -> PointStatus.EXPIRED
+            PointStatus.CANCELED -> PointStatus.CANCELED
         }
     }
 
     /**
      * 어드민에 의한 환불 처리 및 부채 삭감 포인트 환급
+     *
+     * - CANCELED: 무시
+     * - USED:
+     *   - 만료 안 됨 -> expiresAt + 3일, AVAILABLE
+     *   - 만료 됨 -> today + 3일, AVAILABLE
+     * - AVAILABLE: expiresAt + 3일, AVAILABLE
+     * - EXPIRED: today + 3일, AVAILABLE
      */
-    fun restore(amount: Long) {
-        this.remainingPoint += amount
+    fun restore(amount: Long, today: LocalDate = LocalDate.now()) {
+        if (status == PointStatus.CANCELED) return
 
-        this.expiresAt =
-            if (this.status == PointStatus.EXPIRED) {
-                // 이미 만료된 경우, 오늘 기준 +3일
-                LocalDate.now().plusDays(3)
-            } else {
-                // 아직 유효한 경우, 기존 만료일 +3일
-                this.expiresAt.plusDays(3)
-            }
+        remainingPoint += amount
 
-        this.status = PointStatus.AVAILABLE
+        expiresAt = when (status) {
+            PointStatus.USED ->
+                if (isExpiredToday(today)) today.plusDays(3) else expiresAt.plusDays(3)
+
+            PointStatus.AVAILABLE -> expiresAt.plusDays(3)
+            PointStatus.EXPIRED -> today.plusDays(3)
+            PointStatus.CANCELED -> expiresAt
+        }
+
+        status = PointStatus.AVAILABLE
     }
 
     /**
