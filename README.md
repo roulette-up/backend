@@ -92,7 +92,7 @@ roulette-up/
 
 ### 4️⃣ 금일 룰렛 예산 수정
 
-<img width="640" height="735" alt="예산 수정" src="https://github.com/user-attachments/assets/7e0b83bc-137a-4cf5-bf66-921946feca0f" />
+<img width="591" height="691" alt="예산 수정" src="https://github.com/user-attachments/assets/997e6c1e-bef9-485a-89dd-eaec4c3e7c98" />
 
 
 1. 어드민이 총 예산 수정
